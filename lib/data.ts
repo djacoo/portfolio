@@ -1,5 +1,5 @@
 // ─── Site ─────────────────────────────────────────────────────────────────────
-export const SITE_URL = "https://jacopoparretti.com";
+export const SITE_URL = "https://jacopo-parretti-portfolio.vercel.app";
 
 // ─── Personal ────────────────────────────────────────────────────────────────
 export const personal = {
