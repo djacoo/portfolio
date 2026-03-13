@@ -24,6 +24,7 @@ export default function Nav() {
   useEffect(() => {
     const isDark = localStorage.getItem("theme") !== "light";
     setDark(isDark);
+    document.documentElement.dataset.theme = isDark ? "dark" : "light";
   }, []);
 
   function toggleTheme() {
@@ -112,7 +113,7 @@ export default function Nav() {
           <button
             onClick={toggleTheme}
             className="md:hidden transition-colors"
-            style={{ color: "var(--fg-3)" }}
+            style={{ color: dark ? "rgba(255,255,255,0.55)" : "rgba(18,12,40,0.6)" }}
             aria-label="Toggle theme"
           >
             {dark ? <Sun size={16} /> : <Moon size={16} />}
@@ -122,7 +123,7 @@ export default function Nav() {
           <button
             onClick={() => setOpen((v) => !v)}
             className="md:hidden transition-colors"
-            style={{ color: "var(--fg-2)" }}
+            style={{ color: dark ? "rgba(255,255,255,0.75)" : "rgba(18,12,40,0.75)" }}
             aria-label="Toggle menu"
           >
             {open ? <X size={18} /> : <Menu size={18} />}
@@ -148,7 +149,7 @@ export default function Nav() {
                 transition={{ delay: i * 0.05 }}
                 onClick={() => { setOpen(false); setActive(i); }}
                 className="text-2xl font-light transition-colors"
-                style={{ fontFamily: "var(--font-playfair)", color: "var(--fg-2)" }}
+                style={{ fontFamily: "var(--font-playfair)", color: "rgba(255,255,255,0.82)" }}
               >
                 {link.label}
               </motion.a>
