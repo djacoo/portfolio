@@ -20,8 +20,7 @@ export default function ThemeToggle() {
   }
 
   return (
-    // right-20 = 80px, giving the 48px "PM" label room to not clip
-    <div className="fixed top-6 right-20 z-50" style={{ position: "fixed", transform: "scale(0.7)", transformOrigin: "top right" }}>
+    <div className="fixed top-6 right-20 z-50 hidden md:block" style={{ position: "fixed", transform: "scale(0.7)", transformOrigin: "top right" }}>
       <input
         id="theme-toggle"
         type="checkbox"

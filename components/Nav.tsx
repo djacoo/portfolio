@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Menu } from "lucide-react";
+import { X, Menu, Sun, Moon } from "lucide-react";
 import { personal } from "@/lib/data";
 
 const links = [
@@ -19,6 +19,19 @@ export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen]         = useState(false);
   const [active, setActive]     = useState(-1);
+  const [dark, setDark]         = useState(true);
+
+  useEffect(() => {
+    const isDark = localStorage.getItem("theme") !== "light";
+    setDark(isDark);
+  }, []);
+
+  function toggleTheme() {
+    const next = !dark;
+    setDark(next);
+    document.documentElement.dataset.theme = next ? "dark" : "light";
+    localStorage.setItem("theme", next ? "dark" : "light");
+  }
 
   useEffect(() => {
     const onScroll = () => {
@@ -94,6 +107,16 @@ export default function Nav() {
           >
             Hire me
           </a>
+
+          {/* Mobile theme toggle */}
+          <button
+            onClick={toggleTheme}
+            className="md:hidden transition-colors"
+            style={{ color: "var(--fg-3)" }}
+            aria-label="Toggle theme"
+          >
+            {dark ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
 
           {/* Mobile hamburger */}
           <button
