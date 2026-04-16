@@ -2,146 +2,216 @@
 
 import { motion } from "framer-motion";
 import { education } from "@/lib/data";
-import SectionHeader from "./SectionHeader";
+import { Reveal, RevealWords } from "@/components/ScrollReveal";
+import SectionCurve from "@/components/SectionCurve";
 
-const THEME = {
-  "In Progress": {
-    accent:   "rgba(167,139,250,0.85)",
-    gradient: "linear-gradient(135deg, rgba(167,139,250,1), rgba(120,180,255,1))",
-    bar:      "linear-gradient(180deg, rgba(167,139,250,0.9), rgba(96,165,250,0.5))",
-    pattern:  `linear-gradient(rgba(167,139,250,0.07) 1px, transparent 1px),
-               linear-gradient(90deg, rgba(167,139,250,0.07) 1px, transparent 1px)`,
-    patternSize: "28px 28px",
-    mark:     "AI",
-  },
-  Completed: {
-    accent:   "rgba(96,165,250,0.85)",
-    gradient: "linear-gradient(135deg, rgba(120,190,255,1), rgba(80,230,180,1))",
-    bar:      "linear-gradient(180deg, rgba(96,165,250,0.9), rgba(52,211,153,0.5))",
-    pattern:  `radial-gradient(circle, rgba(96,165,250,0.14) 1.5px, transparent 1.5px)`,
-    patternSize: "22px 22px",
-    mark:     "99",
-  },
-};
+const SCRIBBLE_A = "M 80,120 C 260,280 40,440 180,560 C 320,680 80,780 220,860";
+const SCRIBBLE_B = "M 1100,80 Q 1280,260 1160,420 T 1280,760";
+
+const callouts = [
+  { k: "Thesis (in progress)", v: "Adaptive inference routing for mixture-of-experts LLMs under tight latency budgets." },
+  { k: "Research interests",   v: "Language models · efficient architectures · retrieval-augmented reasoning." },
+  { k: "Supervisor",           v: "Department of Computer Science · Università di Verona." },
+];
 
 export default function Education() {
   return (
-    <section id="education" className="section">
-      <div className="mx-auto max-w-5xl px-4">
-        <SectionHeader
-          label="Academic background"
-          title="Education"
-          subtitle="Where I built the theoretical foundations that drive my work."
+    <section
+      id="education"
+      className="section section--obsidian relative overflow-hidden"
+    >
+      <SectionCurve position="top" fill="cream" />
+
+      <svg className="scribble-layer" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
+        <motion.path
+          d={SCRIBBLE_A}
+          className="scribble"
+          initial={{ pathLength: 0, opacity: 0 }}
+          whileInView={{ pathLength: 1, opacity: 1 }}
+          viewport={{ once: true, margin: "-120px" }}
+          transition={{ duration: 3.6, ease: [0.22, 1, 0.36, 1] }}
         />
+        <motion.path
+          d={SCRIBBLE_B}
+          className="scribble"
+          initial={{ pathLength: 0, opacity: 0 }}
+          whileInView={{ pathLength: 1, opacity: 1 }}
+          viewport={{ once: true, margin: "-120px" }}
+          transition={{ duration: 3.4, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        />
+      </svg>
 
-        <div className="space-y-5">
-          {education.map((item, i) => {
-            const t = THEME[item.status];
+      <motion.span
+        initial={{ y: -80 }}
+        whileInView={{ y: 120 }}
+        viewport={{ once: true, margin: "-10%" }}
+        transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
+        style={{ top: "20%", right: "-4vw", fontSize: "clamp(12rem, 30vw, 26rem)" }}
+        className="ghost"
+        aria-hidden="true"
+      >
+        Origin
+      </motion.span>
 
-            return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.6, delay: i * 0.12, ease: [0.25, 0.46, 0.45, 0.94] as [number,number,number,number] }}
-                className="glass-panel rounded-3xl overflow-hidden glass-lift"
+      <div className="hidden lg:block absolute left-4 top-[14%] z-10">
+        <span className="side-rail-v">Chapter IV · Formation & Origin</span>
+      </div>
+
+      <div className="mx-auto max-w-6xl px-6 relative z-10">
+
+        <div className="mb-16 sm:mb-24">
+          <Reveal>
+            <div className="flex items-baseline gap-3">
+              <span className="section-marker" style={{ fontSize: 22 }}>(IV)</span>
+              <span className="eyebrow-micro">Chapter 04 · Formation</span>
+            </div>
+          </Reveal>
+          <Reveal delay={80} className="mt-4">
+            <div className="flex items-center gap-3">
+              <span className="h-px w-7" style={{ background: "var(--amber-line)" }} />
+              <span className="eyebrow">Academic background</span>
+            </div>
+          </Reveal>
+          <div className="mt-8 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+            <div>
+              <RevealWords text="Formed" as="h2" italic delay={140} className="display display-lg" />
+              <RevealWords text="through study." as="h2" italic delay={320} className="display display-md" />
+            </div>
+            <Reveal delay={500} className="max-w-md">
+              <p className="footnote" style={{ color: "var(--fg-2)" }}>
+                Formed by the places themselves. Two universities, one continuous line — biology into computation.
+              </p>
+              <p className="eyebrow-micro mt-3" style={{ color: "var(--amber)" }}>
+                {education.length} Programmes · Verona
+              </p>
+            </Reveal>
+          </div>
+        </div>
+
+        {/* Callouts strip */}
+        <Reveal delay={120} className="mb-14 grid grid-cols-1 md:grid-cols-3 gap-6">
+          {callouts.map((c) => (
+            <div
+              key={c.k}
+              className="p-6"
+              style={{
+                border: "0.5px solid var(--divider)",
+                borderRadius: 2,
+                background: "rgba(239,228,210,0.03)",
+              }}
+            >
+              <p className="eyebrow-micro" style={{ color: "var(--amber)" }}>{c.k}</p>
+              <p
+                className="mt-2"
+                style={{
+                  fontFamily: "var(--font-cormorant)",
+                  fontStyle: "italic",
+                  fontSize: 17,
+                  color: "var(--fg-1)",
+                  lineHeight: 1.4,
+                  letterSpacing: "-0.008em",
+                  fontFeatureSettings: '"swsh","salt","ss01"',
+                }}
               >
-                <div className="flex flex-col sm:flex-row">
+                {c.v}
+              </p>
+            </div>
+          ))}
+        </Reveal>
 
-                  {/* ── Left panel ────────────────────────────── */}
-                  <div
-                    className="relative sm:w-52 shrink-0 flex flex-col items-center justify-center gap-1 py-10 px-6 overflow-hidden"
-                    style={{ borderBottom: "0.5px solid var(--divider)" }}
-                  >
-                    {/* Accent bar — left edge on desktop, top edge on mobile */}
-                    <div
-                      className="absolute left-0 top-0 bottom-0 w-[3px] hidden sm:block"
-                      style={{ background: t.bar }}
-                    />
-                    <div
-                      className="absolute top-0 left-0 right-0 h-[3px] sm:hidden"
-                      style={{ background: t.bar }}
-                    />
-
-                    {/* Background geometric pattern */}
-                    <div
-                      className="absolute inset-0 pointer-events-none"
-                      style={{ backgroundImage: t.pattern, backgroundSize: t.patternSize }}
-                    />
-
-                    {/* Hero mark — grade or "AI" */}
-                    <p
-                      className="relative font-mono text-5xl font-bold leading-none tracking-tight"
-                      style={{ background: t.gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
-                    >
-                      {t.mark}
-                    </p>
-
-                    {/* Subscript */}
-                    {item.status === "Completed" && "grade" in item ? (
-                      <p className="relative font-mono text-xs" style={{ color: "var(--fg-4)" }}>
-                        / 110 final grade
-                      </p>
-                    ) : (
-                      <p className="relative font-mono text-[10px] tracking-widest uppercase" style={{ color: "var(--fg-4)" }}>
-                        In Progress
-                      </p>
-                    )}
-
-                    {/* Period */}
-                    <p
-                      className="relative font-mono text-[10px] tracking-wider mt-3"
-                      style={{ color: "var(--fg-4)" }}
-                    >
+        <div className="space-y-12 sm:space-y-16">
+          {education.map((item, i) => (
+            <Reveal key={i} delay={i * 120}>
+              <article
+                style={{
+                  border: "0.5px solid var(--divider)",
+                  padding: "clamp(2.5rem, 5vw, 4rem)",
+                  borderRadius: 2,
+                  position: "relative",
+                }}
+              >
+                <div className="flex items-center justify-between mb-6">
+                  <p className="eyebrow-micro">Entry 0{i + 1}</p>
+                  <p className="eyebrow-micro" style={{ color: "var(--amber)" }}>{item.status}</p>
+                </div>
+                <div className="grid grid-cols-12 gap-6 items-start">
+                  <div className="col-span-12 md:col-span-3">
+                    <span className="eyebrow" style={{ fontSize: 10, color: "var(--amber)" }}>
                       {item.period}
-                    </p>
+                    </span>
+                    {"grade" in item && item.grade ? (
+                      <>
+                        <p className="eyebrow-micro mt-4">Final mark</p>
+                        <p
+                          className="mt-2 num-monument"
+                          style={{ fontSize: "clamp(4.5rem, 9vw, 8rem)" }}
+                        >
+                          {item.grade}
+                        </p>
+                      </>
+                    ) : (
+                      <div className="mt-4 flex items-center gap-2">
+                        <span className="relative flex h-1.5 w-1.5">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-70"
+                                style={{ background: "var(--amber)" }} />
+                          <span className="relative inline-flex rounded-full h-1.5 w-1.5"
+                                style={{ background: "var(--amber)" }} />
+                        </span>
+                        <span className="eyebrow-micro" style={{ color: "var(--amber)" }}>
+                          Ongoing enrolment
+                        </span>
+                      </div>
+                    )}
                   </div>
 
-                  {/* ── Right panel ───────────────────────────── */}
-                  <div
-                    className="flex flex-col flex-1 p-7 gap-4"
-                    style={{ borderLeft: "0.5px solid var(--divider)" }}
-                  >
-                    {/* Degree + institution */}
-                    <div>
-                      <h3 className="text-xl font-bold leading-snug" style={{ color: "var(--fg-1)" }}>
-                        {item.degree}
-                      </h3>
-                      <p className="mt-1 text-sm" style={{ color: t.accent }}>
-                        {item.institution} · {item.location}
-                      </p>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-sm leading-relaxed" style={{ color: "var(--fg-2)" }}>
+                  <div className="col-span-12 md:col-span-9">
+                    <h3
+                      style={{
+                        fontFamily: "var(--font-cormorant)",
+                        fontStyle: "italic",
+                        fontSize: "clamp(1.9rem, 4vw, 3.1rem)",
+                        lineHeight: 1.05,
+                        color: "var(--fg-1)",
+                        letterSpacing: "-0.012em",
+                        fontFeatureSettings: '"liga","dlig","swsh","salt","ss01","kern"',
+                      }}
+                    >
+                      {item.degree}
+                    </h3>
+                    <p
+                      className="mt-2"
+                      style={{
+                        fontFamily: "var(--font-cormorant)",
+                        fontSize: 19,
+                        color: "var(--fg-3)",
+                      }}
+                    >
+                      {item.institution} · {item.location}
+                    </p>
+                    <p className="mt-5 text-[13.5px] leading-[1.9] max-w-[62ch]" style={{ color: "var(--fg-2)" }}>
                       {item.description}
                     </p>
-
-                    {/* Highlights */}
-                    <div className="mt-auto flex flex-wrap gap-2">
+                    <div className="mt-6 flex flex-wrap gap-2">
                       {item.highlights.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-lg px-2.5 py-1 font-mono text-xs transition-colors duration-200"
-                          style={{
-                            color: "var(--fg-3)",
-                            border: `0.5px solid var(--divider)`,
-                            background: `${t.accent}08`,
-                          }}
-                        >
-                          {tag}
-                        </span>
+                        <span key={tag} className="chip chip-amber">{tag}</span>
                       ))}
                     </div>
                   </div>
-
                 </div>
-              </motion.div>
-            );
-          })}
+              </article>
+            </Reveal>
+          ))}
+        </div>
+
+        <div className="mt-14 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <span className="eyebrow-micro">Department of Computer Science</span>
+          <span className="eyebrow-micro" style={{ color: "var(--amber)" }}>
+            Università degli Studi di Verona · EST. 1982
+          </span>
         </div>
       </div>
+
+      <SectionCurve position="bottom" fill="cream" />
     </section>
   );
 }

@@ -2,157 +2,266 @@
 
 import { motion } from "framer-motion";
 import { degrees } from "@/lib/data";
-import SectionHeader from "./SectionHeader";
+import { Reveal, RevealWords } from "@/components/ScrollReveal";
+import SectionCurve from "@/components/SectionCurve";
 
-const ACCENT = {
-  "In Progress": {
-    bar:   "linear-gradient(90deg, rgba(167,139,250,0.9), rgba(96,165,250,0.6))",
-    text:  "linear-gradient(90deg, rgba(192,168,255,1), rgba(120,180,255,1))",
-    dot:   "rgba(167,139,250,0.9)",
-    label: "rgba(167,139,250,0.7)",
+const SCRIBBLE_D = "M 80,80 C 240,260 100,440 220,600 C 340,760 100,860 260,900";
+
+const romans = ["I", "II", "III", "IV", "V"];
+
+const quotes = [
+  {
+    k: "On method",
+    v: "Study is not accumulation. It is the slow habit of asking better questions.",
   },
-  Completed: {
-    bar:   "linear-gradient(90deg, rgba(96,165,250,0.9), rgba(52,211,153,0.6))",
-    text:  "linear-gradient(90deg, rgba(120,190,255,1), rgba(80,230,180,1))",
-    dot:   "rgba(96,165,250,0.9)",
-    label: "rgba(96,165,250,0.7)",
+  {
+    k: "On discipline",
+    v: "A degree is a constraint. The interesting work begins after the constraint is internalised.",
   },
-};
+];
 
 export default function Degrees() {
   return (
-    <section id="degrees" className="section">
-      <div className="mx-auto max-w-5xl px-4">
-        <SectionHeader
-          label="Credentials"
-          title="Academic Degrees"
-          subtitle="Formal qualifications from the University of Verona."
+    <section
+      id="degrees"
+      className="section section--obsidian relative overflow-hidden"
+    >
+      <SectionCurve position="top" fill="cream" />
+
+      {/* Scribble */}
+      <svg className="scribble-layer" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
+        <motion.path
+          d={SCRIBBLE_D}
+          className="scribble"
+          initial={{ pathLength: 0, opacity: 0 }}
+          whileInView={{ pathLength: 1, opacity: 1 }}
+          viewport={{ once: true, margin: "-120px" }}
+          transition={{ duration: 3.6, ease: [0.22, 1, 0.36, 1] }}
         />
+      </svg>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {degrees.map((degree, i) => {
-            const acc = ACCENT[degree.status];
-            const monogram = degree.status === "Completed" ? "B" : "M";
+      <motion.span
+        aria-hidden="true"
+        className="ghost"
+        initial={{ y: -60 }}
+        whileInView={{ y: 100 }}
+        viewport={{ once: true, margin: "-10%" }}
+        transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
+        style={{
+          top: "15%",
+          left: "-2vw",
+          fontSize: "clamp(12rem, 32vw, 28rem)",
+        }}
+      >
+        Academia
+      </motion.span>
 
-            return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 32 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.65, delay: i * 0.14, ease: [0.25, 0.46, 0.45, 0.94] as [number,number,number,number] }}
-                className="relative glass-panel rounded-3xl overflow-hidden glass-lift liquid-shimmer flex flex-col min-h-[500px]"
+      {/* Vertical rail */}
+      <div className="hidden lg:block absolute right-4 top-[14%] z-10">
+        <span className="side-rail-v">Chapter VI · The Paper Record</span>
+      </div>
+
+      <div className="mx-auto max-w-6xl px-6 relative z-10">
+
+        {/* Header */}
+        <div className="mb-16 sm:mb-20">
+          <Reveal>
+            <div className="flex items-baseline gap-3">
+              <span className="section-marker" style={{ fontSize: 22 }}>(VI)</span>
+              <span className="eyebrow-micro">Chapter 06 · Credentials</span>
+            </div>
+          </Reveal>
+          <Reveal delay={80} className="mt-4">
+            <div className="flex items-center gap-3">
+              <span className="h-px w-7" style={{ background: "var(--amber-line)" }} />
+              <span className="eyebrow">The paper record</span>
+            </div>
+          </Reveal>
+          <div className="mt-8 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+            <div>
+              <RevealWords text="The paper" as="h2" italic delay={140} className="display display-lg" />
+              <RevealWords text="record." as="h2" italic delay={320} className="display display-lg" />
+            </div>
+            <Reveal delay={500} className="max-w-md">
+              <p className="footnote" style={{ color: "var(--fg-2)" }}>
+                Two broadsides, one department. Separated by four years and the shift from wet biology to modelling.
+              </p>
+              <p className="eyebrow-micro mt-3" style={{ color: "var(--amber)" }}>
+                {degrees.length} Broadsides · Università di Verona
+              </p>
+            </Reveal>
+          </div>
+        </div>
+
+        {/* Flanking quote strip */}
+        <Reveal delay={120} className="mb-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+          {quotes.map((q) => (
+            <div
+              key={q.k}
+              className="pl-5 border-l"
+              style={{ borderColor: "var(--amber)" }}
+            >
+              <p className="eyebrow-micro" style={{ color: "var(--amber)" }}>{q.k}</p>
+              <p
+                className="mt-2"
+                style={{
+                  fontFamily: "var(--font-cormorant)",
+                  fontStyle: "italic",
+                  fontSize: "clamp(1.05rem, 1.6vw, 1.35rem)",
+                  color: "var(--fg-2)",
+                  lineHeight: 1.35,
+                  letterSpacing: "-0.008em",
+                  fontFeatureSettings: '"swsh","salt","ss01"',
+                }}
               >
-                {/* Gradient accent bar */}
-                <div className="h-[3px] w-full shrink-0" style={{ background: acc.bar }} />
+                {q.v}
+              </p>
+            </div>
+          ))}
+        </Reveal>
 
-                {/* Watermark monogram */}
-                <div
-                  className="pointer-events-none select-none absolute inset-0 flex items-center justify-center overflow-hidden"
-                  aria-hidden="true"
-                >
-                  <span
-                    className="text-[220px] font-bold leading-none"
-                    style={{ fontFamily: "var(--font-playfair)", color: "var(--fg-1)", opacity: 0.025 }}
-                  >
-                    {monogram}
-                  </span>
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10">
+          {degrees.map((d, i) => {
+            const roman = romans[i] ?? String(i + 1);
+            return (
+              <Reveal key={i} delay={i * 160}>
+                <article className="degree-broadside h-full flex flex-col">
+                  <span className="corner tl" />
+                  <span className="corner tr" />
+                  <span className="corner bl" />
+                  <span className="corner br" />
 
-                {/* Card body */}
-                <div className="relative flex flex-col flex-1 p-8 gap-0">
-
-                  {/* Institution block */}
-                  <div>
-                    <p
-                      className="font-mono text-[9px] tracking-[0.28em] uppercase mb-1"
-                      style={{ color: acc.label }}
-                    >
-                      {degree.location}
-                    </p>
-                    <p
-                      className="font-mono text-[11px] tracking-[0.15em] uppercase leading-snug"
-                      style={{ color: "var(--fg-3)" }}
-                    >
-                      {degree.institution}
-                    </p>
+                  <div className="flex items-center justify-center gap-3 mb-8">
+                    <span className="h-px w-5" style={{ background: "var(--amber-line)" }} />
+                    <span className="eyebrow-micro" style={{ color: "var(--fg-4)" }}>
+                      Entry 0{i + 1}
+                    </span>
+                    <span className="h-px w-5" style={{ background: "var(--amber-line)" }} />
                   </div>
 
-                  {/* Ornamental divider */}
-                  <div className="flex items-center gap-3 my-7">
-                    <div className="flex-1 h-px" style={{ background: "var(--divider)" }} />
-                    <span style={{ color: acc.dot, fontSize: "8px", lineHeight: 1 }}>✦</span>
-                    <div className="flex-1 h-px" style={{ background: "var(--divider)" }} />
-                  </div>
-
-                  {/* Degree name */}
-                  <div className="flex-1">
-                    <p
-                      className="font-mono text-[10px] tracking-[0.22em] uppercase mb-4"
-                      style={{ color: "var(--fg-4)" }}
-                    >
-                      {degree.title}
-                    </p>
-                    <h3
-                      className="text-4xl font-bold leading-[1.12]"
-                      style={{ fontFamily: "var(--font-playfair)", color: "var(--fg-1)" }}
-                    >
-                      {degree.field}
-                    </h3>
-                  </div>
-
-                  {/* Bottom row */}
                   <div
-                    className="mt-auto pt-6 flex items-end justify-between gap-4"
-                    style={{ borderTop: "0.5px solid var(--divider)" }}
+                    style={{
+                      fontFamily: "var(--font-cormorant)",
+                      fontStyle: "italic",
+                      fontSize: "clamp(6rem, 14vw, 11rem)",
+                      lineHeight: 0.85,
+                      color: "transparent",
+                      WebkitTextStroke: "1px var(--amber)",
+                      letterSpacing: "-0.04em",
+                      fontFeatureSettings: '"swsh","salt","ss01"',
+                    }}
+                    aria-hidden="true"
                   >
-                    <div>
-                      <p
-                        className="font-mono text-[9px] tracking-[0.22em] uppercase mb-1.5"
-                        style={{ color: "var(--fg-4)" }}
-                      >
-                        Period
-                      </p>
-                      <p className="font-mono text-sm" style={{ color: "var(--fg-2)" }}>
-                        {degree.period}
-                      </p>
-                    </div>
+                    {roman}
+                  </div>
 
-                    {"grade" in degree && degree.grade ? (
-                      <div className="text-right">
-                        <p
-                          className="font-mono text-[9px] tracking-[0.22em] uppercase mb-1.5"
-                          style={{ color: "var(--fg-4)" }}
-                        >
-                          Final Grade
+                  <p
+                    className="font-mono mt-8"
+                    style={{
+                      fontSize: 10,
+                      letterSpacing: "0.34em",
+                      textTransform: "uppercase",
+                      color: "var(--amber)",
+                    }}
+                  >
+                    {d.title}
+                  </p>
+
+                  <h3
+                    className="mt-4"
+                    style={{
+                      fontFamily: "var(--font-cormorant)",
+                      fontStyle: "italic",
+                      fontSize: "clamp(2rem, 4.2vw, 3rem)",
+                      lineHeight: 1.05,
+                      color: "var(--fg-1)",
+                      letterSpacing: "-0.015em",
+                      fontFeatureSettings: '"liga","dlig","swsh","salt","ss01","kern"',
+                    }}
+                  >
+                    {d.field}
+                  </h3>
+
+                  <p
+                    className="mt-3"
+                    style={{
+                      fontFamily: "var(--font-cormorant)",
+                      fontSize: 17,
+                      color: "var(--fg-3)",
+                    }}
+                  >
+                    {d.institution}
+                  </p>
+                  <p
+                    className="font-mono mt-1"
+                    style={{
+                      fontSize: 10,
+                      letterSpacing: "0.2em",
+                      color: "var(--fg-4)",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {d.location}
+                  </p>
+
+                  <div className="mt-8 flex items-center justify-center gap-3">
+                    <span className="h-px w-10" style={{ background: "var(--amber-line)" }} />
+                    <span className="eyebrow-micro" style={{ color: "var(--fg-3)" }}>
+                      {d.period}
+                    </span>
+                    <span className="h-px w-10" style={{ background: "var(--amber-line)" }} />
+                  </div>
+
+                  <div className="mt-auto pt-10">
+                    {"grade" in d && d.grade ? (
+                      <>
+                        <p className="eyebrow-micro" style={{ color: "var(--fg-4)" }}>
+                          Final Mark
                         </p>
                         <p
-                          className="font-mono text-3xl font-bold"
+                          className="mt-3 num-monument"
                           style={{
-                            background: acc.text,
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
+                            fontSize: "clamp(2.8rem, 6vw, 4.5rem)",
+                            letterSpacing: "-0.02em",
                           }}
                         >
-                          {degree.grade}
+                          {d.grade}
                         </p>
-                      </div>
+                      </>
                     ) : (
-                      <div
-                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg glass-inset font-mono text-xs shrink-0"
-                        style={{ color: "#FFBD2E" }}
-                      >
-                        <span className="text-[8px]">◌</span>
-                        In Progress
+                      <div className="flex items-center justify-center gap-2">
+                        <span className="relative flex h-1.5 w-1.5">
+                          <span
+                            className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-70"
+                            style={{ background: "var(--amber)" }}
+                          />
+                          <span
+                            className="relative inline-flex rounded-full h-1.5 w-1.5"
+                            style={{ background: "var(--amber)" }}
+                          />
+                        </span>
+                        <span className="eyebrow-micro" style={{ color: "var(--amber)" }}>
+                          In Progress
+                        </span>
                       </div>
                     )}
                   </div>
-                </div>
-              </motion.div>
+                </article>
+              </Reveal>
             );
           })}
         </div>
+
+        {/* Footer strip */}
+        <div className="mt-20 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <span className="eyebrow-micro">End of broadsides · Chapter VI</span>
+          <span className="eyebrow-micro" style={{ color: "var(--amber)" }}>
+            Archived at Verona · MMXXIV–MMXXVI
+          </span>
+        </div>
       </div>
+
+      <SectionCurve position="bottom" fill="cream" />
     </section>
   );
 }

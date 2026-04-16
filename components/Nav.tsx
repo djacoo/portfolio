@@ -1,158 +1,307 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Menu, Sun, Moon } from "lucide-react";
+import { X, Menu } from "lucide-react";
 import { personal } from "@/lib/data";
 
 const links = [
-  { label: "About",    href: "#about",    id: "about" },
-  { label: "Projects", href: "#projects", id: "projects" },
-  { label: "Stack",    href: "#stack",    id: "stack" },
-  { label: "Timeline", href: "#timeline", id: "timeline" },
-  { label: "Contact",  href: "#contact",  id: "contact" },
+  { label: "Work",    href: "#projects",  id: "projects", n: "01" },
+  { label: "Story",   href: "#about",     id: "about",    n: "02" },
+  { label: "Stack",   href: "#stack",     id: "stack",    n: "03" },
+  { label: "Path",    href: "#timeline",  id: "timeline", n: "04" },
+  { label: "Contact", href: "#contact",   id: "contact",  n: "05" },
 ];
 
-const N = links.length;
-
 export default function Nav() {
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState(-1);
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen]         = useState(false);
-  const [active, setActive]     = useState(-1);
-  const [dark, setDark]         = useState(true);
+  const barRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const isDark = localStorage.getItem("theme") !== "light";
-    setDark(isDark);
-    document.documentElement.dataset.theme = isDark ? "dark" : "light";
-  }, []);
+    let ticking = false;
+    let lastScrolled = false;
+    let lastActive = -1;
+    // Cache absolute tops so scroll updates don't trigger layout every frame.
+    let tops: number[] = [];
 
-  function toggleTheme() {
-    const next = !dark;
-    setDark(next);
-    document.documentElement.dataset.theme = next ? "dark" : "light";
-    localStorage.setItem("theme", next ? "dark" : "light");
-  }
-
-  useEffect(() => {
-    const onScroll = () => {
+    const measure = () => {
       const y = window.scrollY;
-      setScrolled(y > 50);
-      const mid = y + window.innerHeight * 0.45;
-      let found = -1;
-      links.forEach((link, i) => {
-        const el = document.getElementById(link.id);
-        if (el && el.offsetTop <= mid) found = i;
+      tops = links.map((l) => {
+        const el = document.getElementById(l.id);
+        return el ? el.getBoundingClientRect().top + y : Number.POSITIVE_INFINITY;
       });
-      setActive(found);
     };
+
+    const update = () => {
+      ticking = false;
+      const y = window.scrollY;
+      const nextScrolled = y > 40;
+      if (nextScrolled !== lastScrolled) {
+        lastScrolled = nextScrolled;
+        setScrolled(nextScrolled);
+      }
+
+      const mid = y + window.innerHeight * 0.42;
+      let found = -1;
+      for (let i = 0; i < tops.length; i++) {
+        if (tops[i] <= mid) found = i;
+      }
+      if (found !== lastActive) {
+        lastActive = found;
+        setActive(found);
+      }
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+
+    const onResize = () => {
+      measure();
+      onScroll();
+    };
+
+    // Initial measurement after layout settles (fonts/images may shift it).
+    measure();
+    update();
+    const settle = window.setTimeout(measure, 400);
+
     window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onResize, { passive: true });
+    window.addEventListener("load", measure, { passive: true, once: true });
+    return () => {
+      window.clearTimeout(settle);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("load", measure);
+    };
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, [open]);
+
+  const go = (href: string, idx: number) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!href.startsWith("#")) return;
+    e.preventDefault();
+    setActive(idx);
+    setOpen(false);
+    const id = href.slice(1);
+    const lenis = window.__lenis;
+    if (lenis) {
+      lenis.scrollTo(id === "hero" ? 0 : `#${id}`, { offset: -48, duration: 1.1 });
+    } else {
+      const el = document.getElementById(id);
+      el?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   return (
     <>
       <motion.header
-        initial={{ y: -60, opacity: 0 }}
+        ref={barRef}
+        initial={{ y: -24, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-        className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-5 px-6"
+        transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        className={`nav-bar ${scrolled ? "scrolled" : ""}`}
+        style={{ paddingBlock: scrolled ? "0.85rem" : "1.25rem" }}
       >
-        <div
-          className={`relative flex items-center gap-3 rounded-full px-4 py-2 transition-all duration-500 overflow-hidden ${
-            scrolled ? "nav-metal" : "border border-transparent bg-transparent"
-          }`}
-        >
-          {/* Logo */}
+        <div className="mx-auto max-w-7xl px-6 sm:px-10 flex items-center justify-between gap-6">
+          {/* Wordmark — stacked serif name + tagline */}
           <a
-            href="#"
-            className="relative z-10 font-mono text-xs tracking-widest uppercase transition-colors shrink-0 pr-1"
-            style={{ color: "var(--fg-2)" }}
-            onClick={() => setActive(-1)}
+            href="#hero"
+            onClick={go("#hero", -1)}
+            className="flex items-start gap-3 shrink-0"
+            style={{ textDecoration: "none" }}
           >
-            HERO
-            <span style={{ color: "var(--fg-4)" }}>.</span>
+            <div className="flex flex-col leading-none">
+              <span
+                style={{
+                  fontFamily: "var(--font-cormorant)",
+                  fontStyle: "italic",
+                  fontWeight: 500,
+                  fontSize: "1.22rem",
+                  letterSpacing: "-0.012em",
+                  color: "var(--fg-1)",
+                  lineHeight: 1.02,
+                  fontFeatureSettings: '"liga","dlig","swsh","salt","ss01","kern"',
+                }}
+              >
+                Jacopo
+              </span>
+              <span
+                style={{
+                  fontFamily: "var(--font-cormorant)",
+                  fontStyle: "italic",
+                  fontWeight: 500,
+                  fontSize: "1.22rem",
+                  letterSpacing: "-0.012em",
+                  color: "var(--fg-1)",
+                  lineHeight: 1.02,
+                  fontFeatureSettings: '"liga","dlig","swsh","salt","ss01","kern"',
+                }}
+              >
+                Parretti
+              </span>
+            </div>
+            <span
+              className="hidden sm:inline-block font-mono mt-[3px]"
+              style={{
+                fontSize: "8.5px",
+                letterSpacing: "0.22em",
+                textTransform: "uppercase",
+                color: "var(--fg-4)",
+                lineHeight: 1.1,
+              }}
+            >
+              Atelier<br />MMXXVI
+            </span>
           </a>
 
-          {/* Glass radio nav — desktop */}
-          <nav className="relative z-10 hidden md:block">
-            <div className="glass-nav-group">
-              {links.map((link, i) => (
+          {/* Center pill-tab nav */}
+          <nav className="hidden md:flex items-center">
+            <div className="nav-pillset">
+              {links.map((l, i) => (
                 <a
-                  key={link.href}
-                  href={link.href}
-                  className={`glass-nav-item${active === i ? " active" : ""}`}
-                  onClick={() => setActive(i)}
+                  key={l.href}
+                  href={l.href}
+                  className={`nav-pill ${active === i ? "active" : ""}`}
+                  onClick={go(l.href, i)}
                 >
-                  {link.label}
+                  <span className="nav-numeral">{l.n}</span>
+                  {l.label}
                 </a>
               ))}
-              {active >= 0 && (
-                <div
-                  className="glass-nav-glider"
-                  style={{
-                    width: `${100 / N}%`,
-                    transform: `translateX(${active * 100}%)`,
-                  }}
-                />
-              )}
             </div>
           </nav>
 
-          {/* Hire me */}
-          <a
-            href={`mailto:${personal.email}`}
-            className="relative z-10 hidden md:inline-flex items-center rounded-full px-4 py-1.5 text-xs shrink-0 ml-1 hire-btn"
-          >
-            Hire me
-          </a>
+          {/* Right cluster */}
+          <div className="flex items-center gap-4 sm:gap-5 shrink-0">
+            <span className="hidden lg:flex items-center gap-2">
+              <span className="relative inline-flex">
+                <span className="nav-status-ping" />
+                <span className="nav-status-dot relative" />
+              </span>
+              <span
+                className="font-mono"
+                style={{
+                  fontSize: "9px",
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  color: "var(--fg-3)",
+                }}
+              >
+                Available
+              </span>
+            </span>
 
-          {/* Mobile theme toggle */}
-          <button
-            onClick={toggleTheme}
-            className="md:hidden transition-colors"
-            style={{ color: dark ? "rgba(255,255,255,0.55)" : "rgba(18,12,40,0.6)" }}
-            aria-label="Toggle theme"
-          >
-            {dark ? <Sun size={16} /> : <Moon size={16} />}
-          </button>
+            <span
+              className="hidden lg:inline-block"
+              style={{ width: "0.5px", height: "14px", background: "var(--divider)" }}
+            />
 
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setOpen((v) => !v)}
-            className="md:hidden transition-colors"
-            style={{ color: dark ? "rgba(255,255,255,0.75)" : "rgba(18,12,40,0.75)" }}
-            aria-label="Toggle menu"
-          >
-            {open ? <X size={18} /> : <Menu size={18} />}
-          </button>
+            <a
+              href={`mailto:${personal.email}`}
+              className="hidden md:inline-flex items-baseline gap-1.5 editorial-link"
+              style={{
+                fontSize: "10.5px",
+                letterSpacing: "0.24em",
+                textTransform: "uppercase",
+                color: "var(--fg-1)",
+                textDecoration: "none",
+                fontWeight: 500,
+              }}
+            >
+              Send Request
+              <span
+                style={{
+                  fontFamily: "var(--font-cormorant)",
+                  fontStyle: "italic",
+                  color: "var(--amber)",
+                  fontSize: "13px",
+                  letterSpacing: 0,
+                }}
+              >
+                ↗
+              </span>
+            </a>
+
+            <button
+              onClick={() => setOpen(v => !v)}
+              className="md:hidden theme-swatch flex items-center justify-center"
+              style={{ width: 34, height: 34 }}
+              aria-label="Toggle menu"
+            >
+              {open ? <X size={14} /> : <Menu size={14} />}
+            </button>
+          </div>
         </div>
       </motion.header>
 
+      {/* Mobile overlay */}
       <AnimatePresence>
         {open && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-10 bg-black/95 backdrop-blur-xl md:hidden"
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-7 md:hidden"
+            style={{ background: "var(--bg-body)" }}
           >
-            {links.map((link, i) => (
+            {links.map((l, i) => (
               <motion.a
-                key={link.href}
-                href={link.href}
-                initial={{ opacity: 0, y: 12 }}
+                key={l.href}
+                href={l.href}
+                initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
-                onClick={() => { setOpen(false); setActive(i); }}
-                className="text-2xl font-light transition-colors"
-                style={{ fontFamily: "var(--font-playfair)", color: "rgba(255,255,255,0.82)" }}
+                transition={{ delay: 0.05 + i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                onClick={go(l.href, i)}
+                className="flex items-baseline gap-3"
+                style={{ textDecoration: "none" }}
               >
-                {link.label}
+                <span
+                  className="font-mono"
+                  style={{
+                    fontSize: "10px",
+                    letterSpacing: "0.14em",
+                    color: "var(--amber)",
+                  }}
+                >
+                  {l.n}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "var(--font-cormorant)",
+                    fontStyle: "italic",
+                    fontSize: "clamp(2.4rem, 8vw, 3.6rem)",
+                    fontWeight: 500,
+                    letterSpacing: "-0.018em",
+                    color: "var(--fg-1)",
+                    fontFeatureSettings: '"liga","dlig","swsh","salt","ss01","ss02","kern"',
+                  }}
+                >
+                  {l.label}
+                </span>
               </motion.a>
             ))}
+            <motion.a
+              href={`mailto:${personal.email}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="absolute bottom-12 font-mono text-[11px] tracking-[0.22em]"
+              style={{ color: "var(--fg-3)" }}
+            >
+              {personal.email}
+            </motion.a>
           </motion.div>
         )}
       </AnimatePresence>

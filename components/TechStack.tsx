@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   SiPython, SiTypescript, SiGo, SiRust,
@@ -10,372 +9,226 @@ import {
   SiHuggingface, SiScikitlearn,
 } from "react-icons/si";
 import { techStack } from "@/lib/data";
-import SectionHeader from "./SectionHeader";
+import { Reveal, RevealWords } from "@/components/ScrollReveal";
 
-const iconMap: Record<string, { icon: React.ElementType | null; color: string }> = {
-  Python:         { icon: SiPython,      color: "#3776AB" },
-  TypeScript:     { icon: SiTypescript,  color: "#3178C6" },
-  Go:             { icon: SiGo,          color: "#00ADD8" },
-  Rust:           { icon: SiRust,        color: "#CE422B" },
-  PyTorch:        { icon: SiPytorch,     color: "#EE4C2C" },
-  TensorFlow:     { icon: SiTensorflow,  color: "#FF6F00" },
-  JAX:            { icon: null,          color: "#A259FF" },
-  "Hugging Face": { icon: SiHuggingface, color: "#FFD21E" },
-  "scikit-learn": { icon: SiScikitlearn, color: "#F7931E" },
-  "Next.js":      { icon: SiNextdotjs,   color: "#BBBBBB" },
-  React:          { icon: SiReact,       color: "#61DAFB" },
-  "Tailwind CSS": { icon: SiTailwindcss, color: "#06B6D4" },
-  FastAPI:        { icon: SiFastapi,     color: "#009688" },
-  "Node.js":      { icon: SiNodedotjs,   color: "#339933" },
-  Docker:         { icon: SiDocker,      color: "#2496ED" },
-  Kubernetes:     { icon: SiKubernetes,  color: "#326CE5" },
-  PostgreSQL:     { icon: SiPostgresql,  color: "#4169E1" },
-  Redis:          { icon: SiRedis,       color: "#DC382D" },
-  Git:            { icon: SiGit,         color: "#F05032" },
-  AWS:            { icon: null,          color: "#FF9900" },
+const SCRIBBLE_D = "M 1260,40 Q 1160,180 1320,360 T 1260,780";
+
+const iconMap: Record<string, React.ElementType | null> = {
+  Python:         SiPython,
+  TypeScript:     SiTypescript,
+  Go:             SiGo,
+  Rust:           SiRust,
+  PyTorch:        SiPytorch,
+  TensorFlow:     SiTensorflow,
+  JAX:            null,
+  "Hugging Face": SiHuggingface,
+  "scikit-learn": SiScikitlearn,
+  "Next.js":      SiNextdotjs,
+  React:          SiReact,
+  "Tailwind CSS": SiTailwindcss,
+  FastAPI:        SiFastapi,
+  "Node.js":      SiNodedotjs,
+  Docker:         SiDocker,
+  Kubernetes:     SiKubernetes,
+  PostgreSQL:     SiPostgresql,
+  Redis:          SiRedis,
+  Git:            SiGit,
+  AWS:            null,
 };
 
 const categories = [
-  {
-    key: "ml",
-    label: "ML / AI",
-    index: "01",
-    accent: "#22d3ee",
-    accent2: "#a78bfa",
-    description: "Frameworks powering research and production models.",
-    featured: true,
-  },
-  {
-    key: "language",
-    label: "Languages",
-    index: "02",
-    accent: "#a78bfa",
-    accent2: "#7c6af7",
-    description: "Primary languages I write in.",
-    featured: false,
-  },
-  {
-    key: "web",
-    label: "Web & APIs",
-    index: "03",
-    accent: "#34d399",
-    accent2: "#06b6d4",
-    description: "Fullstack tools for building products.",
-    featured: false,
-  },
-  {
-    key: "infra",
-    label: "Infra & DevOps",
-    index: "04",
-    accent: "#f59e0b",
-    accent2: "#f97316",
-    description: "Deployment, databases, and tooling.",
-    featured: false,
-  },
+  { key: "ml",       label: "ML & AI",         index: "I",  blurb: "Where models are trained, evaluated, and coaxed into usefulness." },
+  { key: "language", label: "Languages",       index: "II", blurb: "The raw material — from hot loops in Go to quick sketches in Python." },
+  { key: "web",      label: "Web & APIs",      index: "III", blurb: "Interfaces and services. Where research meets the browser." },
+  { key: "infra",    label: "Infra & DevOps",  index: "IV", blurb: "Containers, databases, and the quiet pipelines that hold it all up." },
 ];
 
-function hexToRgba(hex: string, a: number) {
-  const c = hex.replace("#", "");
-  const r = parseInt(c.slice(0, 2), 16);
-  const g = parseInt(c.slice(2, 4), 16);
-  const b = parseInt(c.slice(4, 6), 16);
-  return `rgba(${r},${g},${b},${a})`;
-}
-
-const ease = [0.22, 1, 0.36, 1] as [number, number, number, number];
-
-interface TechChipProps {
-  name: string;
-  catIndex: number;
-  chipIndex: number;
-  large?: boolean;
-  isLight?: boolean;
-}
-
-function TechChip({ name, catIndex, chipIndex, large = false, isLight = false }: TechChipProps) {
-  const [hovered, setHovered] = useState(false);
-  const entry = iconMap[name];
-  const color = entry?.color ?? "#8888ff";
-  const Icon = entry?.icon;
-
-  const defaultBorder = isLight ? "rgba(0,0,0,0.10)" : "rgba(255,255,255,0.07)";
-  const defaultBg     = isLight ? "rgba(0,0,0,0.04)"  : "rgba(255,255,255,0.035)";
-  const defaultIcon   = isLight ? "rgba(29,29,31,0.45)" : "rgba(255,255,255,0.38)";
-  const defaultLabel  = isLight ? "rgba(29,29,31,0.62)" : "rgba(255,255,255,0.52)";
-  const hoveredLabel  = isLight ? "rgba(29,29,31,0.90)" : "rgba(255,255,255,0.90)";
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 6 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.28, delay: catIndex * 0.07 + chipIndex * 0.03, ease }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: large ? 10 : 8,
-        padding: large ? "10px 18px" : "7px 13px",
-        borderRadius: 10,
-        border: `0.5px solid ${hovered ? hexToRgba(color, 0.45) : defaultBorder}`,
-        background: hovered ? hexToRgba(color, 0.10) : defaultBg,
-        boxShadow: hovered ? `0 0 18px ${hexToRgba(color, 0.18)}, inset 0 0.5px 0 rgba(255,255,255,0.12)` : "none",
-        cursor: "default",
-        transition: "all 0.18s ease",
-        userSelect: "none" as const,
-        flexShrink: 0,
-      }}
-    >
-      {Icon ? (
-        <Icon
-          size={large ? 20 : 15}
-          style={{
-            color: hovered ? color : defaultIcon,
-            transition: "color 0.18s ease",
-            flexShrink: 0,
-          }}
-        />
-      ) : (
-        <span style={{
-          fontSize: large ? 10 : 8,
-          fontWeight: 700,
-          fontFamily: "var(--font-geist-mono)",
-          color: hovered ? color : defaultIcon,
-          transition: "color 0.18s ease",
-          flexShrink: 0,
-          lineHeight: 1,
-          letterSpacing: "0.04em",
-        }}>
-          {name.slice(0, 3).toUpperCase()}
-        </span>
-      )}
-      <span style={{
-        fontFamily: "var(--font-geist-sans)",
-        fontSize: large ? 13.5 : 12.5,
-        fontWeight: 450,
-        color: hovered ? hoveredLabel : defaultLabel,
-        transition: "color 0.18s ease",
-        letterSpacing: "0.015em",
-        whiteSpace: "nowrap" as const,
-      }}>
-        {name}
-      </span>
-    </motion.div>
-  );
-}
-
 export default function TechStack() {
-  const [isLight, setIsLight] = useState(false);
-
-  useEffect(() => {
-    const check = () =>
-      setIsLight(document.documentElement.dataset.theme === "light");
-    check();
-    const obs = new MutationObserver(check);
-    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => obs.disconnect();
-  }, []);
-
-  const featured = categories.find(c => c.featured)!;
-  const rest = categories.filter(c => !c.featured);
-
-  const featuredItems = techStack.filter(t => t.category === featured.key);
-
   return (
-    <section id="stack" className="section">
-      <div className="mx-auto max-w-5xl px-6">
-        <SectionHeader
-          label="Tools of the trade"
-          title="Tech Stack"
-          subtitle="Technologies and frameworks I reach for when building."
+    <section
+      id="stack"
+      className="section section--cream relative overflow-hidden"
+    >
+      {/* Scribble */}
+      <svg className="scribble-layer" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
+        <motion.path
+          d={SCRIBBLE_D}
+          className="scribble"
+          initial={{ pathLength: 0, opacity: 0 }}
+          whileInView={{ pathLength: 1, opacity: 1 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 3.2, ease: [0.22, 1, 0.36, 1] }}
         />
+      </svg>
 
-        <div className="flex flex-col gap-[0.6rem]">
+      <motion.span
+        initial={{ x: 80 }}
+        whileInView={{ x: -80 }}
+        viewport={{ once: true, margin: "-10%" }}
+        transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
+        style={{ bottom: "6%", right: "-4vw", fontSize: "clamp(12rem, 30vw, 26rem)" }}
+        className="ghost"
+        aria-hidden="true"
+      >
+        Craft
+      </motion.span>
 
-          {/* ── Featured: ML / AI ── full-width hero panel */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 0.55, ease }}
+      {/* Vertical rail */}
+      <div className="hidden lg:block absolute left-4 top-[16%] z-10">
+        <span className="side-rail-v">Chapter III · Instruments of the Practice</span>
+      </div>
+
+      <div className="mx-auto max-w-6xl px-6 relative z-10">
+
+        {/* Header */}
+        <div className="mb-16">
+          <Reveal>
+            <div className="flex items-baseline gap-3">
+              <span className="section-marker" style={{ fontSize: 22 }}>(III)</span>
+              <span className="eyebrow-micro">Chapter 03 · Instruments</span>
+            </div>
+          </Reveal>
+          <Reveal delay={80} className="mt-4">
+            <div className="flex items-center gap-3">
+              <span className="h-px w-7" style={{ background: "var(--amber-line)" }} />
+              <span className="eyebrow">Tools of the trade</span>
+            </div>
+          </Reveal>
+          <div className="mt-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+              <RevealWords text="The" as="h2" italic delay={140} className="display display-lg" />
+              <RevealWords text="Instruments" as="h2" italic={false} delay={260} className="display display-lg" />
+            </div>
+            <Reveal delay={440} className="max-w-md">
+              <p className="footnote" style={{ color: "var(--fg-2)" }}>
+                Frameworks and runtimes reached for daily — grouped by the role they play in the work.
+              </p>
+              <p className="eyebrow-micro mt-3" style={{ color: "var(--amber)" }}>
+                {techStack.length} Instruments · IV Categories
+              </p>
+            </Reveal>
+          </div>
+        </div>
+
+        {/* Summary tally strip */}
+        <Reveal delay={120} className="mb-12 grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {categories.map((c) => {
+            const count = techStack.filter((t) => t.category === c.key).length;
+            return (
+              <div key={c.key} className="flex flex-col gap-1 pt-4" style={{ borderTop: "0.5px solid var(--divider)" }}>
+                <span className="eyebrow-micro">{c.label}</span>
+                <span className="num-monument" style={{ fontSize: "clamp(2.4rem, 4vw, 3.2rem)" }}>
+                  {String(count).padStart(2, "0")}
+                </span>
+              </div>
+            );
+          })}
+        </Reveal>
+
+        {/* Categories — editorial 4-row list */}
+        <div className="flex flex-col">
+          {categories.map((cat, ci) => {
+            const items = techStack.filter(t => t.category === cat.key);
+            return (
+              <Reveal key={cat.key} delay={ci * 80}>
+                <div
+                  className="grid grid-cols-12 gap-6 py-10"
+                  style={{ borderTop: "0.5px solid var(--divider)" }}
+                >
+                  <div className="col-span-12 md:col-span-4">
+                    <div className="flex items-baseline gap-3">
+                      <span
+                        style={{
+                          fontFamily: "var(--font-cormorant)",
+                          fontStyle: "italic",
+                          fontSize: 22,
+                          color: "var(--amber)",
+                          fontFeatureSettings: '"swsh","salt","ss01"',
+                        }}
+                      >
+                        {cat.index}.
+                      </span>
+                      <h3
+                        style={{
+                          fontFamily: "var(--font-cormorant)",
+                          fontStyle: "italic",
+                          fontSize: "clamp(1.7rem, 3.2vw, 2.4rem)",
+                          lineHeight: 1,
+                          color: "var(--fg-1)",
+                          letterSpacing: "-0.012em",
+                          fontFeatureSettings: '"swsh","salt","ss01"',
+                        }}
+                      >
+                        {cat.label}
+                      </h3>
+                    </div>
+                    <p className="mt-3 text-[12.5px] leading-[1.75] max-w-[26ch]" style={{ color: "var(--fg-3)" }}>
+                      {cat.blurb}
+                    </p>
+                    <p className="eyebrow-micro mt-3">
+                      {items.length} entries
+                    </p>
+                  </div>
+                  <div className="col-span-12 md:col-span-8 overflow-hidden">
+                    <div className="marquee-wrap">
+                      {[0, 1].map((pass) => (
+                        <div
+                          key={pass}
+                          className={`marquee-track slow${ci % 2 !== 0 ? " reverse" : ""}`}
+                          aria-hidden={pass === 1 ? true : undefined}
+                        >
+                          {items.map((t) => {
+                            const Icon = iconMap[t.name];
+                            return (
+                              <span
+                                key={t.name}
+                                className="flex items-center gap-2.5"
+                                style={{ color: "var(--fg-2)" }}
+                              >
+                                {Icon ? (
+                                  <Icon size={14} style={{ opacity: 0.55 }} />
+                                ) : (
+                                  <span style={{ fontFamily: "var(--font-geist-mono)", fontSize: 9, letterSpacing: "0.08em", color: "var(--amber)" }}>●</span>
+                                )}
+                                <span style={{
+                                  fontFamily: "var(--font-cormorant)",
+                                  fontStyle: "italic",
+                                  fontSize: 19,
+                                  letterSpacing: "-0.008em",
+                                  whiteSpace: "nowrap",
+                                  fontFeatureSettings: '"swsh","salt","ss01"',
+                                }}>
+                                  {t.name}
+                                </span>
+                                <span style={{ color: "var(--amber)", fontSize: 10, marginLeft: "0.5rem" }}>·</span>
+                              </span>
+                            );
+                          })}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            );
+          })}
+          <div style={{ borderBottom: "0.5px solid var(--divider)" }} />
+        </div>
+
+        {/* Footer strip */}
+        <div className="mt-14 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <span className="eyebrow-micro">End of catalogue · Chapter III</span>
+          <span
             style={{
-              position: "relative",
-              borderRadius: 20,
-              border: `0.5px solid ${isLight ? "rgba(0,0,0,0.09)" : "rgba(255,255,255,0.10)"}`,
-              background: isLight
-                ? "rgba(255,255,255,0.72)"
-                : "rgba(14,16,24,0.80)",
-              backdropFilter: "blur(32px)",
-              WebkitBackdropFilter: "blur(32px)",
-              overflow: "hidden",
-              padding: "1.75rem 2rem",
+              fontFamily: "var(--font-cormorant)",
+              fontStyle: "italic",
+              fontSize: 15,
+              color: "var(--fg-2)",
+              fontFeatureSettings: '"swsh","salt","ss01"',
             }}
           >
-            {/* Ambient glow in background */}
-            <div style={{
-              position: "absolute",
-              inset: 0,
-              background: `radial-gradient(ellipse 70% 80% at 15% 50%, ${hexToRgba(featured.accent, 0.06)} 0%, transparent 60%),
-                           radial-gradient(ellipse 50% 60% at 85% 40%, ${hexToRgba(featured.accent2, 0.07)} 0%, transparent 55%)`,
-              pointerEvents: "none",
-            }} />
-
-            {/* Ghost index watermark */}
-            <span style={{
-              position: "absolute",
-              right: "1.5rem",
-              top: "50%",
-              transform: "translateY(-50%)",
-              fontFamily: "var(--font-playfair)",
-              fontSize: "clamp(5rem, 10vw, 8rem)",
-              fontWeight: 800,
-              color: hexToRgba(featured.accent, 0.04),
-              lineHeight: 1,
-              pointerEvents: "none",
-              userSelect: "none",
-              letterSpacing: "-0.04em",
-            }}>
-              {featured.index}
-            </span>
-
-            {/* Header row */}
-            <div className="flex items-center gap-3 mb-5">
-              <span style={{
-                fontFamily: "var(--font-geist-mono)",
-                fontSize: 9,
-                fontWeight: 600,
-                letterSpacing: "0.26em",
-                textTransform: "uppercase" as const,
-                color: featured.accent,
-              }}>
-                {featured.label}
-              </span>
-              <span style={{
-                fontFamily: "var(--font-geist-mono)",
-                fontSize: 9,
-                letterSpacing: "0.14em",
-                padding: "2px 8px",
-                borderRadius: 99,
-                border: `0.5px solid ${hexToRgba(featured.accent, 0.35)}`,
-                color: hexToRgba(featured.accent, 0.80),
-                background: hexToRgba(featured.accent, 0.06),
-              }}>
-                PRIMARY FOCUS
-              </span>
-              <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, ${isLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.06)"}, transparent)` }} />
-              <span style={{
-                fontFamily: "var(--font-geist-mono)",
-                fontSize: 9,
-                color: isLight ? "rgba(29,29,31,0.45)" : "rgba(255,255,255,0.18)",
-              }}>
-                {featuredItems.length} frameworks
-              </span>
-            </div>
-
-            {/* Large chips */}
-            <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "0.5rem" }}>
-              {featuredItems.map((tech, i) => (
-                <TechChip key={tech.name} name={tech.name} catIndex={0} chipIndex={i} large isLight={isLight} />
-              ))}
-            </div>
-
-            {/* Bottom description */}
-            <p style={{
-              marginTop: "1.25rem",
-              fontFamily: "var(--font-geist-mono)",
-              fontSize: 10,
-              letterSpacing: "0.06em",
-              color: isLight ? "rgba(29,29,31,0.45)" : "rgba(255,255,255,0.18)",
-              fontStyle: "italic",
-            }}>
-              {featured.description}
-            </p>
-          </motion.div>
-
-          {/* ── Bottom 3 panels ── */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-[0.6rem]">
-            {rest.map((cat, ci) => {
-              const items = techStack.filter(t => t.category === cat.key);
-              return (
-                <motion.div
-                  key={cat.key}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-30px" }}
-                  transition={{ duration: 0.45, delay: ci * 0.07, ease }}
-                  style={{
-                    position: "relative",
-                    borderRadius: 20,
-                    border: `0.5px solid ${isLight ? "rgba(0,0,0,0.09)" : "rgba(255,255,255,0.08)"}`,
-                    background: isLight
-                      ? "rgba(255,255,255,0.65)"
-                      : "rgba(14,16,24,0.72)",
-                    backdropFilter: "blur(24px)",
-                    WebkitBackdropFilter: "blur(24px)",
-                    overflow: "hidden",
-                    padding: "1.4rem 1.5rem",
-                  }}
-                >
-                  {/* Top accent line */}
-                  <div style={{
-                    position: "absolute",
-                    top: 0, left: 0, right: 0,
-                    height: 2,
-                    background: `linear-gradient(90deg, ${cat.accent}, ${cat.accent2}, transparent)`,
-                    borderRadius: "20px 20px 0 0",
-                    opacity: 0.7,
-                  }} />
-
-                  {/* Ghost index */}
-                  <span style={{
-                    position: "absolute",
-                    right: "1rem",
-                    bottom: "0.75rem",
-                    fontFamily: "var(--font-playfair)",
-                    fontSize: "4rem",
-                    fontWeight: 800,
-                    color: hexToRgba(cat.accent, 0.04),
-                    lineHeight: 1,
-                    pointerEvents: "none",
-                    userSelect: "none",
-                    letterSpacing: "-0.04em",
-                  }}>
-                    {cat.index}
-                  </span>
-
-                  {/* Header */}
-                  <div className="flex items-center justify-between mb-4">
-                    <span style={{
-                      fontFamily: "var(--font-geist-mono)",
-                      fontSize: 9,
-                      fontWeight: 600,
-                      letterSpacing: "0.22em",
-                      textTransform: "uppercase" as const,
-                      color: cat.accent,
-                    }}>
-                      {cat.label}
-                    </span>
-                    <span style={{
-                      fontFamily: "var(--font-geist-mono)",
-                      fontSize: 9,
-                      color: isLight ? "rgba(29,29,31,0.45)" : "rgba(255,255,255,0.16)",
-                    }}>
-                      {items.length}
-                    </span>
-                  </div>
-
-                  {/* Chips */}
-                  <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "0.4rem" }}>
-                    {items.map((tech, ti) => (
-                      <TechChip key={tech.name} name={tech.name} catIndex={ci + 1} chipIndex={ti} isLight={isLight} />
-                    ))}
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-
+            Always learning, rarely finished.
+          </span>
         </div>
       </div>
     </section>

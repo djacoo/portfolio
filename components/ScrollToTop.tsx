@@ -8,7 +8,21 @@ export default function ScrollToTop() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 600);
+    let ticking = false;
+    let last = false;
+    const update = () => {
+      ticking = false;
+      const next = window.scrollY > 600;
+      if (next !== last) {
+        last = next;
+        setVisible(next);
+      }
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -23,7 +37,11 @@ export default function ScrollToTop() {
           transition={{ duration: 0.2 }}
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.94 }}
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          onClick={() => {
+            const lenis = window.__lenis;
+            if (lenis) lenis.scrollTo(0, { duration: 1.1 });
+            else window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
           aria-label="Scroll to top"
           style={{
             position: "fixed",
@@ -36,10 +54,10 @@ export default function ScrollToTop() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            background: "linear-gradient(135deg, rgba(120,80,255,0.82), rgba(60,140,255,0.78))",
-            border: "0.5px solid rgba(255,255,255,0.22)",
-            boxShadow: "0 4px 20px rgba(80,50,200,0.35), inset 0 1px 0 rgba(255,255,255,0.20)",
-            color: "rgba(255,255,255,0.92)",
+            background: "var(--ink)",
+            border: "0.5px solid var(--ink)",
+            boxShadow: "0 8px 24px rgba(15,12,9,0.22)",
+            color: "var(--cream)",
             cursor: "pointer",
           }}
         >

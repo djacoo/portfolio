@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
+import { Geist, Geist_Mono, Cormorant_Garamond, Italiana } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import Cursor from "@/components/Cursor";
@@ -8,18 +8,28 @@ import { SITE_URL, personal } from "@/lib/data";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["300", "400", "500", "600", "700"],
   style: ["normal", "italic"],
+  display: "swap",
+});
+
+const italiana = Italiana({
+  variable: "--font-italiana",
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -128,26 +138,8 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} ${italiana.variable} antialiased`}
       >
-        {/* SVG filter definitions for liquid glass distortion */}
-        <svg width="0" height="0" className="absolute pointer-events-none" aria-hidden="true">
-          <defs>
-            {/* Liquid merge — adjacent glass elements blend at edges */}
-            <filter id="liquid-glass" x="-20%" y="-20%" width="140%" height="140%" colorInterpolationFilters="sRGB">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
-              <feColorMatrix in="blur" mode="matrix"
-                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
-                result="goo" />
-              <feComposite in="SourceGraphic" in2="goo" operator="atop" />
-            </filter>
-            {/* Glass refraction — subtle warp of content seen through glass */}
-            <filter id="glass-refract" x="-5%" y="-5%" width="110%" height="110%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="2" seed="8" result="noise" />
-              <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
-            </filter>
-          </defs>
-        </svg>
         <SmoothScroll>
           <Cursor />
           {children}

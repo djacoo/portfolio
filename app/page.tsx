@@ -1,31 +1,37 @@
+import dynamic from "next/dynamic";
 import BackgroundScene from "@/components/BackgroundScene";
+import AmbientMarks from "@/components/AmbientMarks";
+import Grain from "@/components/Grain";
 import Loader from "@/components/Loader";
 import Nav from "@/components/Nav";
-import ThemeToggle from "@/components/ThemeToggle";
 import ScrollProgress from "@/components/ScrollProgress";
-import ScrollToTop from "@/components/ScrollToTop";
 import Hero from "@/components/Hero";
-import About from "@/components/About";
-import Education from "@/components/Education";
-import Projects from "@/components/Projects";
-import TechStack from "@/components/TechStack";
-import Timeline from "@/components/Timeline";
-import Degrees from "@/components/Degrees";
-import Contact from "@/components/Contact";
+
+// Above-the-fold stays eager. Below-the-fold is code-split so the initial
+// hydration payload stays small; HTML is still SSR'd for SEO.
+const About = dynamic(() => import("@/components/About"));
+const Projects = dynamic(() => import("@/components/Projects"));
+const TechStack = dynamic(() => import("@/components/TechStack"));
+const Education = dynamic(() => import("@/components/Education"));
+const Timeline = dynamic(() => import("@/components/Timeline"));
+const Degrees = dynamic(() => import("@/components/Degrees"));
+const Contact = dynamic(() => import("@/components/Contact"));
+const ScrollToTop = dynamic(() => import("@/components/ScrollToTop"));
 
 export default function Home() {
   return (
     <main>
       <BackgroundScene />
+      <AmbientMarks />
+      <Grain />
       <Loader />
       <ScrollProgress />
       <Nav />
-      <ThemeToggle />
       <Hero />
       <About />
-      <Education />
       <Projects />
       <TechStack />
+      <Education />
       <Timeline />
       <Degrees />
       <Contact />

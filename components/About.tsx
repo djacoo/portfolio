@@ -5,9 +5,10 @@ import { motion, useInView } from "framer-motion";
 import { personal, about } from "@/lib/data";
 import { useCopy } from "@/lib/useCopy";
 import Toast from "@/components/Toast";
-import SectionHeader from "./SectionHeader";
+import { Reveal, RevealWords } from "@/components/ScrollReveal";
 
-// ── Animated counter ─────────────────────────────────────────────────────────
+const SCRIBBLE_D = "M 1200,60 C 1100,200 1360,340 1260,480 C 1180,600 1380,720 1200,840";
+
 function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-20px" });
@@ -31,15 +32,22 @@ function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
 }
 
 const BASE_STATS = [
-  { label: "Projects",     target: 6,  suffix: "",  accent: "rgba(167,139,250,0.95)" },
-  { label: "Years coding", target: 4,  suffix: "+", accent: "rgba(96,165,250,0.95)"  },
-  { label: "Degrees",      target: 2,  suffix: "",  accent: "rgba(52,211,153,0.95)"  },
+  { label: "Projects",     target: 6,  suffix: "" },
+  { label: "Years coding", target: 4,  suffix: "+" },
+  { label: "Degrees",      target: 2,  suffix: "" },
 ];
 
 const currently = [
-  { role: "MSc Artificial Intelligence", org: "Università di Verona", color: "rgba(96,165,250,0.9)"  },
-  { role: "Data Analyst",                org: "JD Sports & Fashion",  color: "rgba(52,211,153,0.9)"  },
-  { role: "Open-Source Contributor",     org: "GitHub",               color: "rgba(167,139,250,0.9)" },
+  { role: "MSc Artificial Intelligence", org: "Università di Verona" },
+  { role: "Data Analyst",                org: "JD Sports & Fashion" },
+  { role: "Open-Source Contributor",     org: "GitHub" },
+];
+
+const principles = [
+  { n: "i",   title: "Rigour over novelty",    note: "Understanding why systems work outlasts the systems themselves." },
+  { n: "ii",  title: "Code meets reality",     note: "Write software that survives contact with production." },
+  { n: "iii", title: "Data before opinion",    note: "Measure, then argue — never the reverse." },
+  { n: "iv",  title: "Craft is slow",          note: "Taste compounds. Shortcuts do not." },
 ];
 
 const info = [
@@ -63,189 +71,300 @@ export default function About() {
   const stats = [
     ...BASE_STATS,
     ...(repoCount !== null
-      ? [{ label: "Repos", target: repoCount, suffix: "", accent: "rgba(251,146,60,0.95)" }]
+      ? [{ label: "Repos", target: repoCount, suffix: "" }]
       : []),
   ];
 
   return (
-    <section id="about" className="section">
-      <div className="mx-auto max-w-5xl px-4">
-        <SectionHeader label="Who I am" title="About Me" />
+    <section
+      id="about"
+      className="section section--cream relative overflow-hidden"
+    >
+      {/* Scribble trace */}
+      <svg className="scribble-layer" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
+        <motion.path
+          d={SCRIBBLE_D}
+          className="scribble"
+          initial={{ pathLength: 0, opacity: 0 }}
+          whileInView={{ pathLength: 1, opacity: 1 }}
+          viewport={{ once: true, margin: "-120px" }}
+          transition={{ duration: 3.4, ease: [0.22, 1, 0.36, 1] }}
+        />
+      </svg>
 
-        <div className="flex flex-col gap-4">
+      <motion.span
+        initial={{ x: -60 }}
+        whileInView={{ x: 60 }}
+        viewport={{ once: true, margin: "-10%" }}
+        transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
+        className="ghost"
+        aria-hidden="true"
+      >
+        <span style={{ fontSize: "clamp(10rem, 28vw, 26rem)" }}>Story</span>
+      </motion.span>
 
-          {/* ── Lead paragraph ──────────────────────────────── */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6 }}
-            className="glass-panel rounded-3xl overflow-hidden flex"
-          >
-            <div
-              className="w-[3px] shrink-0"
-              style={{ background: "linear-gradient(180deg, rgba(167,139,250,0.9), rgba(96,165,250,0.6))" }}
-            />
-            <div className="px-8 py-7">
-              <p
-                className="font-mono text-[9px] tracking-[0.28em] uppercase mb-4"
-                style={{ color: "var(--fg-4)" }}
-              >
-                {personal.tagline}
-              </p>
-              <p
-                className="text-lg leading-[1.8]"
-                style={{ fontFamily: "var(--font-playfair)", color: "var(--fg-1)" }}
-              >
-                {about.paragraphs[0]}
-              </p>
+      {/* Vertical rail label — left edge */}
+      <div className="hidden lg:block absolute left-4 top-[18%] z-10">
+        <span className="side-rail-v">Chapter I · Principle Preceding Practice</span>
+      </div>
+
+      <div className="mx-auto max-w-6xl px-6 relative z-10">
+
+        {/* Header */}
+        <div className="mb-16 sm:mb-24">
+          <Reveal>
+            <div className="flex items-baseline gap-3">
+              <span className="section-marker" style={{ fontSize: 22 }}>(I)</span>
+              <span className="eyebrow-micro">Chapter 01 · Principle</span>
             </div>
-          </motion.div>
+          </Reveal>
+          <Reveal delay={80} className="mt-4">
+            <div className="flex items-center gap-3">
+              <span className="h-px w-7" style={{ background: "var(--amber-line)" }} />
+              <span className="eyebrow">Who I am</span>
+            </div>
+          </Reveal>
+          <div className="mt-8 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+            <div>
+              <RevealWords text="Principle" as="h2" stagger={0} delay={140} italic className="display display-lg" />
+              <RevealWords text="thought as craft" as="p" stagger={90} delay={360} italic className="display display-sm mt-3" />
+            </div>
+            <Reveal delay={520} className="max-w-sm md:text-right">
+              <p className="footnote">
+                Objects are not designed first and placed later. They are formed within a practice and only leave once complete.
+              </p>
+              <p className="eyebrow-micro mt-2">§ 01 — On method</p>
+            </Reveal>
+          </div>
+        </div>
 
-          {/* ── Two-column row ──────────────────────────────── */}
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_256px] gap-4">
+        {/* Main grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          {/* Left column — body */}
+          <div className="lg:col-span-8">
+            <Reveal>
+              <p
+                className="body-serif drop-cap"
+                style={{
+                  fontSize: "clamp(1.4rem, 2.2vw, 1.95rem)",
+                  color: "var(--fg-1)",
+                  lineHeight: 1.3,
+                }}
+              >
+                <span style={{ color: "var(--amber)", fontSize: "1.2em", lineHeight: 0, verticalAlign: "-0.1em", marginRight: "0.05em" }}>·</span>
+                &ldquo;I came to computer science through biology. That detour taught me to
+                think algorithmically about messy, high-dimensional data — a foundation
+                that maps cleanly onto modern machine learning.&rdquo;
+              </p>
+            </Reveal>
 
-            {/* Left — body + currently + interests */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.6, delay: 0.08 }}
-              className="glass-panel rounded-3xl p-8 flex flex-col gap-6"
-            >
-              <div className="space-y-4">
-                {about.paragraphs.slice(1).map((p, i) => (
-                  <p key={i} className="text-sm leading-[1.85]" style={{ color: "var(--fg-2)" }}>
-                    {p}
-                  </p>
-                ))}
-              </div>
-
-              {/* Currently */}
-              <div className="pt-5" style={{ borderTop: "0.5px solid var(--divider)" }}>
-                <p
-                  className="font-mono text-[9px] tracking-[0.28em] uppercase mb-3"
-                  style={{ color: "var(--fg-5)" }}
-                >
-                  Currently
+            <Reveal delay={120} className="mt-10 space-y-6">
+              {about.paragraphs.slice(1).map((p, i) => (
+                <p key={i} className="text-[14px] leading-[1.95] max-w-[48ch]" style={{ color: "var(--fg-2)" }}>
+                  {p}
                 </p>
-                <div className="space-y-2.5">
-                  {currently.map((c) => (
-                    <div key={c.role} className="flex items-center gap-2.5 min-w-0">
-                      <span className="relative flex h-1.5 w-1.5 shrink-0">
-                        <span
-                          className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-50"
-                          style={{ background: c.color }}
-                        />
-                        <span
-                          className="relative inline-flex rounded-full h-1.5 w-1.5"
-                          style={{ background: c.color }}
-                        />
-                      </span>
-                      <span className="text-xs font-medium" style={{ color: "var(--fg-2)" }}>
-                        {c.role}
-                      </span>
-                      <span className="text-xs" style={{ color: "var(--fg-5)" }}>·</span>
-                      <span className="text-xs truncate" style={{ color: "var(--fg-4)" }}>
-                        {c.org}
-                      </span>
-                    </div>
-                  ))}
-                </div>
+              ))}
+            </Reveal>
+
+            {/* Principles list — numbered editorial rows */}
+            <Reveal delay={180} className="mt-14">
+              <div className="flex items-baseline gap-3 mb-6">
+                <span className="section-marker" style={{ fontSize: 16 }}>§</span>
+                <span className="eyebrow">Four principles</span>
+                <span className="flex-1 h-px" style={{ background: "var(--divider)" }} />
               </div>
-
-              {/* Interests */}
-              <div className="flex flex-wrap gap-2">
-                {about.interests.map((tag) => (
-                  <span
-                    key={tag}
-                    className="glass-inset rounded-full px-3.5 py-1 text-xs font-mono"
-                    style={{ color: "var(--fg-3)" }}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Right sidebar */}
-            <div className="flex flex-col gap-4">
-
-              {/* Stats with animated counters */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.6, delay: 0.14 }}
-                className="glass-panel rounded-3xl overflow-hidden"
-              >
-                {stats.map(({ label, target, suffix, accent }, i) => (
-                  <div
-                    key={label}
-                    className="flex items-center justify-between px-6 py-5"
-                    style={{ borderBottom: i < stats.length - 1 ? "0.5px solid var(--divider)" : "none" }}
-                  >
-                    <span
-                      className="font-mono text-[10px] tracking-wider uppercase"
-                      style={{ color: "var(--fg-4)" }}
-                    >
-                      {label}
-                    </span>
-                    <span
-                      className="text-3xl font-bold leading-none"
-                      style={{ fontFamily: "var(--font-playfair)", color: accent }}
-                    >
-                      <Counter target={target} suffix={suffix} />
-                    </span>
-                  </div>
-                ))}
-              </motion.div>
-
-              {/* Info rows */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.6, delay: 0.20 }}
-                className="glass-panel rounded-3xl overflow-hidden"
-              >
-                {info.map(({ label, value, href, copy: isCopy, copyText }, i) => (
-                  <div
-                    key={label}
-                    className="flex items-center justify-between px-5 py-3.5"
-                    style={{ borderBottom: i < info.length - 1 ? "0.5px solid var(--divider)" : "none" }}
-                  >
-                    <span
-                      className="font-mono text-[10px] tracking-wide shrink-0 w-16"
-                      style={{ color: "var(--fg-4)" }}
-                    >
-                      {label}
-                    </span>
-                    {href ? (
-                      <a
-                        href={isCopy ? undefined : href}
-                        target={!isCopy && !href.startsWith("mailto") ? "_blank" : undefined}
-                        rel="noopener noreferrer"
-                        onClick={isCopy ? (e) => { e.preventDefault(); copy(copyText!); } : undefined}
-                        className="text-xs text-right truncate transition-colors duration-200"
+              <ul className="divide-y" style={{ borderColor: "var(--divider)" }}>
+                {principles.map((p) => (
+                  <li key={p.n} className="grid grid-cols-12 gap-4 py-5" style={{ borderTop: "0.5px solid var(--divider)" }}>
+                    <div className="col-span-1">
+                      <span
                         style={{
-                          color: "var(--fg-accent)",
-                          cursor: isCopy ? "copy" : "pointer",
-                          textDecoration: "none",
+                          fontFamily: "var(--font-cormorant)",
+                          fontStyle: "italic",
+                          fontSize: 17,
+                          color: "var(--amber)",
+                          fontFeatureSettings: '"swsh","salt","ss01"',
                         }}
                       >
-                        {value}
-                      </a>
-                    ) : (
-                      <span className="text-xs text-right truncate" style={{ color: "var(--fg-2)" }}>
-                        {value}
+                        {p.n}.
                       </span>
-                    )}
-                  </div>
+                    </div>
+                    <div className="col-span-11 sm:col-span-4">
+                      <span
+                        style={{
+                          fontFamily: "var(--font-cormorant)",
+                          fontStyle: "italic",
+                          fontSize: "clamp(1.25rem, 1.8vw, 1.5rem)",
+                          color: "var(--fg-1)",
+                          letterSpacing: "-0.008em",
+                          fontFeatureSettings: '"swsh","salt","ss01"',
+                        }}
+                      >
+                        {p.title}
+                      </span>
+                    </div>
+                    <p className="col-span-12 sm:col-span-7 text-[13px] leading-[1.85]" style={{ color: "var(--fg-3)" }}>
+                      {p.note}
+                    </p>
+                  </li>
                 ))}
-              </motion.div>
+                <li className="h-0" style={{ borderTop: "0.5px solid var(--divider)" }} />
+              </ul>
+            </Reveal>
 
-            </div>
+            {/* Interests — italic comma-list like inspo */}
+            <Reveal delay={220} className="mt-12">
+              <p className="eyebrow-micro mb-3">Current preoccupations</p>
+              <p className="tag-serif" style={{ lineHeight: 1.5 }}>
+                {about.interests.map((t, i) => (
+                  <span key={t}>
+                    {t}
+                    {i < about.interests.length - 1 && (
+                      <span style={{ color: "var(--amber)", margin: "0 0.5em" }}>·</span>
+                    )}
+                  </span>
+                ))}
+              </p>
+            </Reveal>
+          </div>
+
+          {/* Right rail */}
+          <div className="lg:col-span-4 lg:pt-16 flex flex-col gap-10">
+
+            {/* Currently */}
+            <Reveal>
+              <div>
+                <div className="flex items-center gap-3 mb-5">
+                  <span className="h-px w-5" style={{ background: "var(--amber)" }} />
+                  <span className="eyebrow" style={{ color: "var(--amber)" }}>Currently</span>
+                </div>
+                <ul className="space-y-3">
+                  {currently.map((c) => (
+                    <li key={c.role} className="flex items-baseline gap-1.5">
+                      <span
+                        style={{
+                          fontFamily: "var(--font-cormorant)",
+                          fontStyle: "italic",
+                          fontSize: 17,
+                          color: "var(--fg-1)",
+                          whiteSpace: "nowrap",
+                          flexShrink: 0,
+                          fontFeatureSettings: '"swsh","salt","ss01"',
+                        }}
+                      >
+                        {c.role}
+                      </span>
+                      <span style={{
+                        flex: 1,
+                        borderBottom: "1px dotted var(--fg-5)",
+                        marginBottom: "0.25em",
+                        minWidth: 8,
+                      }} />
+                      <span className="eyebrow-micro" style={{ whiteSpace: "nowrap" }}>
+                        {c.org}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+
+            {/* Stats */}
+            <Reveal delay={120}>
+              <div>
+                <p className="eyebrow-micro mb-3">Ledger</p>
+                <ul>
+                  {stats.map(({ label, target, suffix }) => (
+                    <li key={label} className="pair-row">
+                      <span className="pair-label">{label}</span>
+                      <span
+                        className="num-monument"
+                        style={{ fontSize: "2.3rem" }}
+                      >
+                        <Counter target={target} suffix={suffix} />
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+
+            {/* Reading now — decorative fill */}
+            <Reveal delay={160}>
+              <div>
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="h-px w-5" style={{ background: "var(--amber-line)" }} />
+                  <span className="eyebrow-micro" style={{ color: "var(--amber)" }}>Reading</span>
+                </div>
+                <ul className="space-y-1.5">
+                  {[
+                    { t: "Deep Learning",              a: "Goodfellow · Bengio" },
+                    { t: "Probabilistic ML",           a: "Kevin P. Murphy" },
+                    { t: "The Elements of Computing", a: "Nisan · Schocken" },
+                  ].map((b) => (
+                    <li key={b.t} className="flex items-baseline gap-2">
+                      <span style={{
+                        fontFamily: "var(--font-cormorant)",
+                        fontStyle: "italic",
+                        fontSize: 15,
+                        color: "var(--fg-1)",
+                        fontFeatureSettings: '"swsh","salt","ss01"',
+                      }}>{b.t}</span>
+                      <span style={{
+                        flex: 1,
+                        borderBottom: "1px dotted var(--fg-5)",
+                        marginBottom: "0.2em",
+                      }} />
+                      <span className="eyebrow-micro" style={{ fontSize: 8.5 }}>{b.a}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+
+            {/* Contact rows */}
+            <Reveal delay={200}>
+              <div>
+                <p className="eyebrow-micro mb-3">Directory</p>
+                <ul className="space-y-2.5">
+                  {info.map(({ label, value, href, copy: isCopy, copyText }) => (
+                    <li key={label} className="flex items-center justify-between gap-4">
+                      <span className="eyebrow shrink-0" style={{ fontSize: 9 }}>{label}</span>
+                      {href ? (
+                        <a
+                          href={isCopy ? undefined : href}
+                          target={!isCopy && !href.startsWith("mailto") ? "_blank" : undefined}
+                          rel="noopener noreferrer"
+                          onClick={isCopy ? (e) => { e.preventDefault(); copy(copyText!); } : undefined}
+                          className="editorial-link truncate"
+                          style={{
+                            color: "var(--fg-1)",
+                            fontFamily: "var(--font-cormorant)",
+                            fontSize: 15,
+                            fontStyle: "italic",
+                            fontFeatureSettings: '"swsh","salt","ss01"',
+                          }}
+                        >
+                          {value}
+                        </a>
+                      ) : (
+                        <span
+                          className="truncate"
+                          style={{
+                            color: "var(--fg-2)",
+                            fontFamily: "var(--font-cormorant)",
+                            fontSize: 15,
+                            fontStyle: "italic",
+                          }}
+                        >
+                          {value}
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
           </div>
         </div>
       </div>
