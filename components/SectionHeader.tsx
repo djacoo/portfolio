@@ -33,14 +33,19 @@ export default function SectionHeader({ label, title, subtitle }: SectionHeaderP
         {title}
       </h2>
 
-      {/* Accent underline */}
+      {/* Accent underline — grows from center on scroll-in */}
       <div className="flex justify-center mt-3">
-        <div style={{
-          width: 36,
-          height: 2,
-          borderRadius: 99,
-          background: "linear-gradient(90deg, rgba(167,139,250,0.85), rgba(96,165,250,0.6))",
-        }} />
+        <motion.div
+          initial={{ width: 0, opacity: 0 }}
+          whileInView={{ width: 56, opacity: 1 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            height: 2,
+            borderRadius: 99,
+            background: "linear-gradient(90deg, rgba(167,139,250,0.85), rgba(96,165,250,0.6))",
+          }}
+        />
       </div>
 
       {subtitle && (

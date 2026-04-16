@@ -103,8 +103,7 @@ export default function Nav() {
           {/* Hire me */}
           <a
             href={`mailto:${personal.email}`}
-            className="relative z-10 hidden md:inline-flex items-center rounded-full border px-4 py-1.5 text-xs transition-all duration-200 shrink-0 ml-1"
-            style={{ color: "var(--fg-3)", borderColor: "var(--fg-5)" }}
+            className="relative z-10 hidden md:inline-flex items-center rounded-full px-4 py-1.5 text-xs shrink-0 ml-1 hire-btn"
           >
             Hire me
           </a>

@@ -48,23 +48,31 @@ export default function Timeline() {
                   }`}
                 >
                   {/* Mobile left line + dot / Desktop: dot centered on line */}
-                  <div
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{ duration: 0.4, delay: i * 0.06 + 0.1, ease: [0.34, 1.56, 0.64, 1] }}
                     className="relative z-10 shrink-0 flex items-center justify-center
                       ml-0 mt-4 sm:absolute sm:left-1/2 sm:-translate-x-1/2 sm:ml-0"
                   >
-                    <div
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 0.25 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: i * 0.06 + 0.25 }}
                       className="absolute rounded-full pointer-events-none"
-                      style={{ width: 20, height: 20, background: accent, opacity: 0.18, filter: "blur(6px)" }}
+                      style={{ width: 22, height: 22, background: accent, filter: "blur(6px)" }}
                     />
                     <div
                       className="relative h-3 w-3 rounded-full"
                       style={{
                         background: accent,
                         border: "2px solid var(--bg-body)",
-                        boxShadow: `0 0 8px ${accent}55`,
+                        boxShadow: `0 0 10px ${accent}88`,
                       }}
                     />
-                  </div>
+                  </motion.div>
 
                   {/* Card — takes up half the width on desktop */}
                   <div

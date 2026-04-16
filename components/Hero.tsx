@@ -147,23 +147,19 @@ export default function Hero() {
             </div>
           </Magnetic>
           <Magnetic>
-            <div className="btn-wrapper">
-              <a href="#contact" className="iridescent-btn">
-                <span className="btn-text">Get in Touch</span>
-              </a>
-            </div>
+            <a href="#contact" className="btn-ghost">
+              Get in Touch
+            </a>
           </Magnetic>
           <Magnetic>
-            <div className="btn-wrapper">
-              <button
-                onClick={() => setCvOpen(true)}
-                className="iridescent-btn"
-                style={{ display: "flex", alignItems: "center", gap: 7 }}
-              >
-                <Download size={13} />
-                <span className="btn-text">Download CV</span>
-              </button>
-            </div>
+            <button
+              onClick={() => setCvOpen(true)}
+              className="btn-ghost"
+              style={{ display: "flex", alignItems: "center", gap: 7 }}
+            >
+              <Download size={13} />
+              Download CV
+            </button>
           </Magnetic>
         </motion.div>
 
@@ -202,10 +198,20 @@ export default function Hero() {
         transition={{ delay: 1.4, duration: 0.8 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
-        <div
-          className="h-10 w-[1px]"
-          style={{ background: "linear-gradient(180deg, var(--fg-3) 0%, transparent 100%)" }}
-        />
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          className="flex flex-col items-center gap-1.5"
+        >
+          <div
+            className="h-1.5 w-1.5 rounded-full"
+            style={{ background: "var(--fg-3)" }}
+          />
+          <div
+            className="h-8 w-[1px]"
+            style={{ background: "linear-gradient(180deg, var(--fg-3) 0%, transparent 100%)" }}
+          />
+        </motion.div>
       </motion.div>
     </section>
   );
