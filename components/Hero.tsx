@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { Github, Linkedin, Download } from "lucide-react";
 import { SiInstagram } from "react-icons/si";
 import { personal } from "@/lib/data";
@@ -54,13 +54,6 @@ export default function Hero() {
     };
   }, []);
 
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-
-  const fadeOut = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
-
   const sealText = "JACOPO PARRETTI · AI ENGINEER · MMXXVI · VERONA · ";
 
   return (
@@ -112,8 +105,7 @@ export default function Hero() {
 
       {/* Top-left meta — Issue number + coordinates */}
       <motion.div
-        style={{ opacity: fadeOut }}
-        className="absolute top-28 sm:top-32 left-6 sm:left-12 z-20 max-w-[13rem]"
+        className="hero-fade absolute top-28 sm:top-32 left-6 sm:left-12 z-20 max-w-[13rem]"
       >
         <motion.div
           initial={{ opacity: 0, y: -8 }}
@@ -149,8 +141,7 @@ export default function Hero() {
 
       {/* Top-right — rotating seal + metadata */}
       <motion.div
-        style={{ opacity: fadeOut }}
-        className="absolute top-32 right-6 sm:right-12 z-20 hidden md:flex flex-col items-end gap-4"
+        className="hero-fade absolute top-32 right-6 sm:right-12 z-20 hidden md:flex flex-col items-end gap-4"
         initial={{ opacity: 0, scale: 0.7, rotate: -30 }}
         animate={loaded ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 0, scale: 0.7, rotate: -30 }}
         transition={{ duration: 1.2, delay: 1.0, ease }}
@@ -288,8 +279,7 @@ export default function Hero() {
         initial={{ opacity: 0, y: 24 }}
         animate={loaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
         transition={{ duration: 0.9, delay: 1.5, ease }}
-        style={{ opacity: fadeOut }}
-        className="relative z-20 px-6 sm:px-12 pb-10 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6"
+        className="hero-fade relative z-20 px-6 sm:px-12 pb-10 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6"
       >
         <div className="max-w-[22rem] flex flex-col gap-3 sm:ml-16 md:ml-20">
           <span className="eyebrow-micro" style={{ color: "var(--amber)" }}>— In Brief</span>
@@ -337,8 +327,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={loaded ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.6, delay: 1.7, ease }}
-        style={{ opacity: fadeOut }}
-        className="absolute bottom-24 left-6 sm:left-12 hidden sm:flex flex-col gap-3 z-20"
+        className="hero-fade absolute bottom-24 left-6 sm:left-12 hidden sm:flex flex-col gap-3 z-20"
       >
         {socials.map(({ href, icon: Icon, label }) => (
           <a
@@ -363,8 +352,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={loaded ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.9, delay: 1.9, ease }}
-        style={{ opacity: fadeOut }}
-        className="relative z-10 marquee-wrap"
+        className="hero-fade relative z-10 marquee-wrap"
       >
         <div className="ribbon-rule">
           <div className="marquee-track slow">

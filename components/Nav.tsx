@@ -7,6 +7,17 @@ import { personal } from "@/lib/data";
 
 const MOBILE_MENU_ID = "primary-mobile-menu";
 
+const wordmarkStyle: React.CSSProperties = {
+  fontFamily: "var(--font-cormorant)",
+  fontStyle: "italic",
+  fontWeight: 500,
+  fontSize: "1.22rem",
+  letterSpacing: "-0.012em",
+  color: "var(--fg-1)",
+  lineHeight: 1.02,
+  fontFeatureSettings: '"liga","dlig","swsh","salt","ss01","kern"',
+};
+
 const links = [
   { label: "Work",    href: "#projects",  id: "projects", n: "01" },
   { label: "Story",   href: "#about",     id: "about",    n: "02" },
@@ -138,34 +149,8 @@ export default function Nav() {
             style={{ textDecoration: "none" }}
           >
             <div className="flex flex-col leading-none">
-              <span
-                style={{
-                  fontFamily: "var(--font-cormorant)",
-                  fontStyle: "italic",
-                  fontWeight: 500,
-                  fontSize: "1.22rem",
-                  letterSpacing: "-0.012em",
-                  color: "var(--fg-1)",
-                  lineHeight: 1.02,
-                  fontFeatureSettings: '"liga","dlig","swsh","salt","ss01","kern"',
-                }}
-              >
-                Jacopo
-              </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-cormorant)",
-                  fontStyle: "italic",
-                  fontWeight: 500,
-                  fontSize: "1.22rem",
-                  letterSpacing: "-0.012em",
-                  color: "var(--fg-1)",
-                  lineHeight: 1.02,
-                  fontFeatureSettings: '"liga","dlig","swsh","salt","ss01","kern"',
-                }}
-              >
-                Parretti
-              </span>
+              <span style={wordmarkStyle}>Jacopo</span>
+              <span style={wordmarkStyle}>Parretti</span>
             </div>
             <span
               className="hidden sm:inline-block font-mono mt-[3px]"

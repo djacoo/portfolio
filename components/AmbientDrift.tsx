@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 /**
  * Ambient orbs — CSS-keyframe drift only. Previous version wrapped
@@ -8,14 +8,26 @@ import { useEffect, useState } from "react";
  * with infinite drift animations and 52-62vw layers that compounded
  * compositor work every scroll frame. Keyframe alone is enough motion.
  */
-export default function AmbientDrift() {
-  const [show, setShow] = useState(false);
 
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (window.matchMedia("(max-width: 768px)").matches) return;
-    setShow(true);
-  }, []);
+const subscribe = (cb: () => void) => {
+  const mm1 = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const mm2 = window.matchMedia("(max-width: 768px)");
+  mm1.addEventListener("change", cb);
+  mm2.addEventListener("change", cb);
+  return () => {
+    mm1.removeEventListener("change", cb);
+    mm2.removeEventListener("change", cb);
+  };
+};
+
+const getSnapshot = () =>
+  !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+  !window.matchMedia("(max-width: 768px)").matches;
+
+const getServerSnapshot = () => false;
+
+export default function AmbientDrift() {
+  const show = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   if (!show) return null;
 

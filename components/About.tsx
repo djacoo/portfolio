@@ -95,8 +95,9 @@ export default function About() {
       <span
         className="ghost"
         aria-hidden="true"
+        style={{ top: "12%", right: "-3vw", fontSize: "clamp(10rem, 28vw, 26rem)" }}
       >
-        <span style={{ fontSize: "clamp(10rem, 28vw, 26rem)" }}>Story</span>
+        Story
       </span>
 
       {/* Vertical rail label — left edge */}
@@ -127,7 +128,7 @@ export default function About() {
             </div>
             <Reveal delay={520} className="max-w-sm md:text-right">
               <p className="footnote">
-                A short introduction — how I ended up in AI, what I'm working on now, and the habits behind the work.
+                A short introduction — how I ended up in AI, what I&apos;m working on now, and the habits behind the work.
               </p>
               <p className="eyebrow-micro mt-2">§ 01 — Introduction</p>
             </Reveal>

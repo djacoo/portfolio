@@ -65,7 +65,6 @@
 /* ─── Base ──────────────────────────────────────────── */
 html {
   background: var(--bg-body);
-  scroll-behavior: smooth;
 }
 
 body {
@@ -165,8 +164,6 @@ section[id] { scroll-margin-top: 88px; }
   position: relative;
   padding-block: clamp(7rem, 14vw, 12rem);
   contain: layout paint style;
-  content-visibility: auto;
-  contain-intrinsic-size: 1px 1400px;
 }
 .section--cream    { background: var(--cream); }
 .section--obsidian { background: var(--obsidian); }
@@ -201,6 +198,21 @@ section[id] { scroll-margin-top: 88px; }
   --fg-accent: rgba(15,12,9,0.88);
   --divider: rgba(15,12,9,0.10);
   color: var(--fg-1);
+  view-timeline-name: --hero-view;
+}
+
+/* Scroll-driven fade for hero overlays. Compositor-only, zero JS per frame.
+   Falls back to always-visible in browsers without scroll-timeline support. */
+@supports (animation-timeline: view()) {
+  .hero-fade {
+    animation: heroScrollFade linear both;
+    animation-timeline: --hero-view;
+    animation-range: exit 0% exit 55%;
+    will-change: opacity;
+  }
+  @keyframes heroScrollFade {
+    to { opacity: 0; }
+  }
 }
 
 /* Curve divider — drop a `.curve-top` or `.curve-bottom` SVG inside the section.
@@ -779,25 +791,28 @@ section[id] { scroll-margin-top: 88px; }
   position: absolute;
   border-radius: 50%;
   will-change: transform;
-  filter: saturate(1.1);
 }
 .drift-orb-1 {
   top: -18%; left: -12%;
-  width: 62vw; height: 62vw;
+  width: 50vw; height: 50vw;
   background: radial-gradient(circle at 50% 50%,
     rgba(200,160,106,0.22) 0%,
     rgba(200,160,106,0.08) 40%,
     rgba(200,160,106,0) 70%);
   animation: driftA 32s ease-in-out infinite alternate;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 .drift-orb-2 {
   top: 22%; right: -18%;
-  width: 52vw; height: 52vw;
+  width: 44vw; height: 44vw;
   background: radial-gradient(circle at 50% 50%,
     rgba(180,138,90,0.20) 0%,
     rgba(180,138,90,0.07) 45%,
     rgba(180,138,90,0) 72%);
   animation: driftB 38s ease-in-out infinite alternate;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 .drift-orb-3 {
   bottom: -22%; left: 28%;
@@ -859,6 +874,25 @@ section[id] { scroll-margin-top: 88px; }
 
 @media (prefers-reduced-motion: reduce) {
   .drift-orb, .drift-curve, .drift-stroke { animation: none; }
+}
+
+/* ─── Scroll-idle animation pauser ──────────────────────
+   During active scroll, pause infinite decorative animations
+   to free frame budget for smooth scrolling. Resumes ~140ms
+   after last scroll event. Transform/opacity state frozen on
+   compositor — no re-rasterization during scroll. */
+html.is-scrolling .drift-orb,
+html.is-scrolling .drift-curve,
+html.is-scrolling .drift-stroke,
+html.is-scrolling .ambient-spark,
+html.is-scrolling .ambient-signet-ring,
+html.is-scrolling .ambient-signet-glyph,
+html.is-scrolling .hero-seal .seal-ring,
+html.is-scrolling .nav-status-ping,
+html.is-scrolling .tick-amber,
+html.is-scrolling .section-marker,
+html.is-scrolling .marquee-track {
+  animation-play-state: paused;
 }
 
 /* ─── Ambient marks (site-wide editorial layer) ─── */
@@ -1057,10 +1091,11 @@ section[id] { scroll-margin-top: 88px; }
   cursor: pointer;
   overflow: hidden;
   contain: layout paint style;
-  transition: padding-left 0.5s var(--ease-fluid);
+  transition: transform 0.5s var(--ease-fluid);
+  will-change: transform;
 }
 .proj-row:last-child { border-bottom: 0.5px solid var(--divider); }
-.proj-row:hover { padding-left: 1.5rem; }
+.proj-row:hover { transform: translateX(1.5rem); }
 .proj-row::before {
   content: "";
   position: absolute;

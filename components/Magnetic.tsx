@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useSyncExternalStore } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 interface Props {
@@ -10,19 +10,30 @@ interface Props {
   padding?: number;
 }
 
+const subscribe = (cb: () => void) => {
+  const mm1 = window.matchMedia("(pointer: fine)");
+  const mm2 = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mm1.addEventListener("change", cb);
+  mm2.addEventListener("change", cb);
+  return () => {
+    mm1.removeEventListener("change", cb);
+    mm2.removeEventListener("change", cb);
+  };
+};
+
+const getSnapshot = () =>
+  window.matchMedia("(pointer: fine)").matches &&
+  !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const getServerSnapshot = () => false;
+
 export default function Magnetic({ children, strength = 0.28, padding = 28 }: Props) {
   const innerRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const sx = useSpring(x, { stiffness: 160, damping: 12 });
   const sy = useSpring(y, { stiffness: 160, damping: 12 });
-  const [enabled, setEnabled] = useState(false);
-
-  useEffect(() => {
-    const fine = window.matchMedia("(pointer: fine)").matches;
-    const noMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    setEnabled(fine && !noMotion);
-  }, []);
+  const enabled = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   // Cache rect on pointer enter; recompute only when pointer enters again.
   // Throttle pointer moves through rAF to prevent reading/writing every pixel.
