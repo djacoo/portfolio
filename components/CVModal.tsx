@@ -30,12 +30,46 @@ const langs = [
 export default function CVModal({ open, onClose }: CVModalProps) {
   const [loading, setLoading] = useState<"EN" | "IT" | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const firstButtonRef = useRef<HTMLButtonElement>(null);
+  const openerRef = useRef<Element | null>(null);
 
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    openerRef.current = document.activeElement;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab" || !dialogRef.current) return;
+      const focusables = dialogRef.current.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    const focusTimer = window.setTimeout(() => firstButtonRef.current?.focus(), 80);
+
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+      window.clearTimeout(focusTimer);
+      const opener = openerRef.current as HTMLElement | null;
+      opener?.focus?.();
+    };
   }, [open, onClose]);
 
   async function handleDownload(lang: "EN" | "IT") {
@@ -69,13 +103,15 @@ export default function CVModal({ open, onClose }: CVModalProps) {
           }}
         >
           <motion.div
+            ref={dialogRef}
             initial={{ opacity: 0, y: 18, scale: 0.975 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.975 }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             role="dialog"
             aria-modal="true"
-            aria-label="Download CV"
+            aria-labelledby="cv-modal-title"
+            aria-describedby="cv-modal-desc"
             style={{
               width: "100%",
               maxWidth: 460,
@@ -104,7 +140,8 @@ export default function CVModal({ open, onClose }: CVModalProps) {
             {/* Close */}
             <button
               onClick={onClose}
-              aria-label="Close"
+              aria-label="Close dialog"
+              type="button"
               style={{
                 position: "absolute",
                 top: 14,
@@ -155,6 +192,7 @@ export default function CVModal({ open, onClose }: CVModalProps) {
               </div>
 
               <h2
+                id="cv-modal-title"
                 style={{
                   fontFamily: "var(--font-cormorant)",
                   fontStyle: "italic",
@@ -172,6 +210,7 @@ export default function CVModal({ open, onClose }: CVModalProps) {
               </h2>
 
               <p
+                id="cv-modal-desc"
                 style={{
                   marginTop: 10,
                   fontSize: 12,
@@ -226,14 +265,18 @@ export default function CVModal({ open, onClose }: CVModalProps) {
                 zIndex: 1,
               }}
             >
-              {langs.map((l) => {
+              {langs.map((l, idx) => {
                 const isLoading = loading === l.code;
                 const isDisabled = loading !== null && !isLoading;
                 return (
                   <button
                     key={l.code}
+                    ref={idx === 0 ? firstButtonRef : undefined}
                     onClick={() => handleDownload(l.code)}
                     disabled={loading !== null}
+                    type="button"
+                    aria-label={`Download CV in ${l.title}`}
+                    aria-busy={isLoading}
                     data-hover
                     className="cv-edition"
                     style={{

@@ -59,9 +59,6 @@ export default function Hero() {
     offset: ["start start", "end start"],
   });
 
-  const firstY  = useTransform(scrollYProgress, [0, 1], [0, -140]);
-  const secondY = useTransform(scrollYProgress, [0, 1], [0, -210]);
-  const monoY   = useTransform(scrollYProgress, [0, 1], [0, -280]);
   const fadeOut = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
 
   const sealText = "JACOPO PARRETTI · AI ENGINEER · MMXXVI · VERONA · ";
@@ -96,7 +93,6 @@ export default function Hero() {
           top: "18%",
           left: "-2vw",
           fontSize: "clamp(16rem, 40vw, 40rem)",
-          y: firstY,
         }}
       >
         JP
@@ -109,7 +105,6 @@ export default function Hero() {
           bottom: "14%",
           right: "-6vw",
           fontSize: "clamp(10rem, 26vw, 22rem)",
-          y: secondY,
         }}
       >
         parretti
@@ -208,7 +203,6 @@ export default function Hero() {
         <div className="relative flex flex-col items-center w-full">
 
           <motion.div
-            style={{ y: monoY }}
             initial={{ opacity: 0, y: 10 }}
             animate={loaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
             transition={{ duration: 0.8, delay: 0.5, ease }}
@@ -221,7 +215,7 @@ export default function Hero() {
             <span className="h-px w-10" style={{ background: "var(--amber-line)" }} />
           </motion.div>
 
-          <motion.div style={{ y: firstY }} className="reveal-line overflow-hidden">
+          <motion.div className="reveal-line overflow-hidden">
             <motion.span
               initial={{ y: "110%" }}
               animate={loaded ? { y: 0 } : { y: "110%" }}
@@ -246,7 +240,7 @@ export default function Hero() {
             initial={{ scaleX: 0, opacity: 0 }}
             animate={loaded ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 }}
             transition={{ duration: 1.2, delay: 0.9, ease }}
-            style={{ y: secondY, transformOrigin: "center" }}
+            style={{ transformOrigin: "center" }}
             className="flex items-center justify-center gap-3 my-3 sm:my-4 w-full"
           >
             <span className="h-px flex-1 max-w-[18%]" style={{ background: "var(--amber-line)" }} />
@@ -254,7 +248,7 @@ export default function Hero() {
             <span className="h-px flex-1 max-w-[18%]" style={{ background: "var(--amber-line)" }} />
           </motion.div>
 
-          <motion.div style={{ y: secondY }} className="reveal-line overflow-hidden w-full">
+          <motion.div className="reveal-line overflow-hidden w-full">
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               animate={loaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
@@ -267,7 +261,6 @@ export default function Hero() {
           </motion.div>
 
           <motion.div
-            style={{ y: monoY }}
             initial={{ opacity: 0, y: 14 }}
             animate={loaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
             transition={{ duration: 0.8, delay: 1.2, ease }}
@@ -353,11 +346,12 @@ export default function Hero() {
             href={href}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={`${label} (opens in new tab)`}
             className="flex items-center gap-2 transition-colors duration-300 group"
-            style={{ color: "var(--fg-4)", textDecoration: "none" }}
+            style={{ color: "var(--fg-4)", textDecoration: "none", padding: "6px 4px" }}
           >
-            <Icon size={12} />
-            <span className="font-mono text-[10px] tracking-wider opacity-0 group-hover:opacity-100 transition-opacity">
+            <Icon size={14} aria-hidden="true" />
+            <span className="font-mono text-[10px] tracking-wider opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">
               {label}
             </span>
           </a>

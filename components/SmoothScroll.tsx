@@ -11,18 +11,22 @@ declare global {
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+
     const lenis = new Lenis({
-      duration: 0.9,
+      duration: 0.8,
       easing: (t: number) => 1 - Math.pow(1 - t, 3),
       smoothWheel: true,
       wheelMultiplier: 1,
       syncTouch: false,
-      lerp: 0.12,
+      lerp: 0.1,
     });
 
     window.__lenis = lenis;
 
-    let raf: number;
+    let raf = 0;
     function tick(time: number) {
       lenis.raf(time);
       raf = requestAnimationFrame(tick);

@@ -92,16 +92,12 @@ export default function About() {
         />
       </svg>
 
-      <motion.span
-        initial={{ x: -60 }}
-        whileInView={{ x: 60 }}
-        viewport={{ once: true, margin: "-10%" }}
-        transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
+      <span
         className="ghost"
         aria-hidden="true"
       >
         <span style={{ fontSize: "clamp(10rem, 28vw, 26rem)" }}>Story</span>
-      </motion.span>
+      </span>
 
       {/* Vertical rail label — left edge */}
       <div className="hidden lg:block absolute left-4 top-[18%] z-10">

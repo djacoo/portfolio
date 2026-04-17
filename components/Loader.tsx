@@ -150,7 +150,9 @@ export default function Loader() {
           transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
           className="fixed inset-0 z-[200] flex items-center justify-center select-none overflow-hidden"
           style={{ background: "var(--cream)" }}
-          aria-label="Loading"
+          role="status"
+          aria-live="polite"
+          aria-label="Loading portfolio"
         >
           {/* Subtle vignette */}
           <div

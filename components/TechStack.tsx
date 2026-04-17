@@ -61,17 +61,13 @@ export default function TechStack() {
         />
       </svg>
 
-      <motion.span
-        initial={{ x: 80 }}
-        whileInView={{ x: -80 }}
-        viewport={{ once: true, margin: "-10%" }}
-        transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
+      <span
         style={{ bottom: "6%", right: "-4vw", fontSize: "clamp(12rem, 30vw, 26rem)" }}
         className="ghost"
         aria-hidden="true"
       >
         Stack
-      </motion.span>
+      </span>
 
       {/* Vertical rail */}
       <div className="hidden lg:block absolute left-4 top-[16%] z-10">

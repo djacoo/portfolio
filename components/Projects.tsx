@@ -169,17 +169,13 @@ export default function Projects() {
         />
       </svg>
 
-      <motion.span
-        initial={{ y: -60 }}
-        whileInView={{ y: 120 }}
-        viewport={{ once: true, margin: "-10%" }}
-        transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
+      <span
         style={{ top: "10%", left: "-2vw", fontSize: "clamp(14rem, 32vw, 30rem)" }}
         className="ghost"
         aria-hidden="true"
       >
         Work
-      </motion.span>
+      </span>
 
       {/* Vertical rail */}
       <div className="hidden lg:block absolute right-4 top-[14%] z-10">

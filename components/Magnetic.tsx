@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 interface Props {
@@ -16,6 +16,13 @@ export default function Magnetic({ children, strength = 0.28, padding = 28 }: Pr
   const y = useMotionValue(0);
   const sx = useSpring(x, { stiffness: 160, damping: 12 });
   const sy = useSpring(y, { stiffness: 160, damping: 12 });
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    const fine = window.matchMedia("(pointer: fine)").matches;
+    const noMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setEnabled(fine && !noMotion);
+  }, []);
 
   // Cache rect on pointer enter; recompute only when pointer enters again.
   // Throttle pointer moves through rAF to prevent reading/writing every pixel.
@@ -56,6 +63,10 @@ export default function Magnetic({ children, strength = 0.28, padding = 28 }: Pr
     x.set(0);
     y.set(0);
   };
+
+  if (!enabled) {
+    return <span style={{ display: "inline-block" }}>{children}</span>;
+  }
 
   return (
     // Outer hit area extends `padding` px beyond the button on all sides

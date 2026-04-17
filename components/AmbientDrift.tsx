@@ -1,17 +1,23 @@
 "use client";
 
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
 
+/**
+ * Ambient orbs — CSS-keyframe drift only. Previous version wrapped
+ * each layer in motion.div with scroll-linked y transforms. Combined
+ * with infinite drift animations and 52-62vw layers that compounded
+ * compositor work every scroll frame. Keyframe alone is enough motion.
+ */
 export default function AmbientDrift() {
-  const reduced = useReducedMotion();
-  const { scrollY } = useScroll();
+  const [show, setShow] = useState(false);
 
-  const y1 = useTransform(scrollY, [0, 6000], [0, -900]);
-  const y2 = useTransform(scrollY, [0, 6000], [0,  600]);
-  const y3 = useTransform(scrollY, [0, 6000], [0, -400]);
-  const yCurve = useTransform(scrollY, [0, 6000], [0, -250]);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.matchMedia("(max-width: 768px)").matches) return;
+    setShow(true);
+  }, []);
 
-  if (reduced) return null;
+  if (!show) return null;
 
   return (
     <div
@@ -26,34 +32,8 @@ export default function AmbientDrift() {
         contain: "strict",
       }}
     >
-      <motion.div style={{ y: y1 }} className="drift-layer">
-        <div className="drift-orb drift-orb-1" />
-      </motion.div>
-
-      <motion.div style={{ y: y2 }} className="drift-layer">
-        <div className="drift-orb drift-orb-2" />
-      </motion.div>
-
-      <motion.div style={{ y: y3 }} className="drift-layer">
-        <div className="drift-orb drift-orb-3" />
-      </motion.div>
-
-      <motion.div style={{ y: yCurve }} className="drift-layer">
-        <svg
-          className="drift-curve"
-          viewBox="0 0 1600 1200"
-          preserveAspectRatio="xMidYMid slice"
-        >
-          <path
-            className="drift-stroke"
-            d="M -120,260 C 380,80 820,520 1220,280 S 1780,80 2000,420"
-          />
-          <path
-            className="drift-stroke drift-stroke--alt"
-            d="M -80,840 C 360,1000 780,620 1180,820 S 1740,1040 1960,740"
-          />
-        </svg>
-      </motion.div>
+      <div className="drift-orb drift-orb-1" />
+      <div className="drift-orb drift-orb-2" />
     </div>
   );
 }

@@ -140,6 +140,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} ${italiana.variable} antialiased`}
       >
+        <a href="#hero" className="skip-link">Skip to content</a>
         <SmoothScroll>
           <Cursor />
           {children}

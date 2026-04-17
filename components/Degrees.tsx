@@ -40,13 +40,9 @@ export default function Degrees() {
         />
       </svg>
 
-      <motion.span
+      <span
         aria-hidden="true"
         className="ghost"
-        initial={{ y: -60 }}
-        whileInView={{ y: 100 }}
-        viewport={{ once: true, margin: "-10%" }}
-        transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
         style={{
           top: "15%",
           left: "-2vw",
@@ -54,7 +50,7 @@ export default function Degrees() {
         }}
       >
         Academia
-      </motion.span>
+      </span>
 
       {/* Vertical rail */}
       <div className="hidden lg:block absolute right-4 top-[14%] z-10">

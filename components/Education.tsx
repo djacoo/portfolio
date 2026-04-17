@@ -41,17 +41,13 @@ export default function Education() {
         />
       </svg>
 
-      <motion.span
-        initial={{ y: -80 }}
-        whileInView={{ y: 120 }}
-        viewport={{ once: true, margin: "-10%" }}
-        transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
+      <span
         style={{ top: "20%", right: "-4vw", fontSize: "clamp(12rem, 30vw, 26rem)" }}
         className="ghost"
         aria-hidden="true"
       >
         Origin
-      </motion.span>
+      </span>
 
       <div className="hidden lg:block absolute left-4 top-[14%] z-10">
         <span className="side-rail-v">Chapter IV · Education</span>

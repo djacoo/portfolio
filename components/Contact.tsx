@@ -39,21 +39,18 @@ export default function Contact() {
       id="contact"
       className="section section--cream relative overflow-hidden"
     >
-      <motion.span
-        initial={{ y: 60, x: "-50%" }}
-        whileInView={{ y: -100, x: "-50%" }}
-        viewport={{ once: true, margin: "-10%" }}
-        transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
+      <span
         style={{
           top: "2%",
           left: "50%",
+          transform: "translateX(-50%)",
           fontSize: "clamp(13rem, 30vw, 28rem)",
         }}
         className="ghost"
         aria-hidden="true"
       >
         Hello
-      </motion.span>
+      </span>
 
       {/* Scribble */}
       <svg className="scribble-layer" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
@@ -200,28 +197,40 @@ export default function Contact() {
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="field-shell">
+                <label htmlFor="c-name" className="sr-only">Your name</label>
                 <input
+                  id="c-name"
+                  name="name"
                   className="field-input"
                   type="text"
                   placeholder="Your name"
                   value={form.name}
                   onChange={e => setForm(s => ({ ...s, name: e.target.value }))}
+                  autoComplete="name"
                   required
                 />
               </div>
               <div className="field-shell">
+                <label htmlFor="c-email" className="sr-only">Your email</label>
                 <input
+                  id="c-email"
+                  name="email"
                   className="field-input"
                   type="email"
                   placeholder="Your email"
                   value={form.email}
                   onChange={e => setForm(s => ({ ...s, email: e.target.value }))}
+                  autoComplete="email"
+                  inputMode="email"
                   required
                 />
               </div>
             </div>
             <div className="field-shell">
+              <label htmlFor="c-message" className="sr-only">Your message</label>
               <textarea
+                id="c-message"
+                name="message"
                 className="field-input"
                 placeholder="Your message"
                 value={form.message}
@@ -285,7 +294,9 @@ export default function Contact() {
           </div>
 
           <button
+            type="button"
             onClick={() => copy(personal.email)}
+            aria-label={`Copy email address ${personal.email}`}
             className="editorial-link flex items-center gap-2.5"
             style={{
               fontFamily: "var(--font-cormorant)",
@@ -294,10 +305,10 @@ export default function Contact() {
               color: "var(--fg-1)",
               background: "none",
               border: "none",
-              padding: 0,
+              padding: "6px 2px",
             }}
           >
-            <Mail size={16} />
+            <Mail size={16} aria-hidden="true" />
             {personal.email}
           </button>
 

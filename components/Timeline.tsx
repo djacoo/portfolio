@@ -52,11 +52,7 @@ export default function Timeline() {
         />
       </svg>
 
-      <motion.span
-        initial={{ x: -60 }}
-        whileInView={{ x: 80 }}
-        viewport={{ once: true, margin: "-10%" }}
-        transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
+      <span
         style={{
           top: "12%",
           left: "-2vw",
@@ -66,7 +62,7 @@ export default function Timeline() {
         aria-hidden="true"
       >
         Path
-      </motion.span>
+      </span>
 
       {/* Vertical rail */}
       <div className="hidden lg:block absolute right-4 top-[14%] z-10">

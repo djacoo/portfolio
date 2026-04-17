@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Menu } from "lucide-react";
 import { personal } from "@/lib/data";
 
+const MOBILE_MENU_ID = "primary-mobile-menu";
+
 const links = [
   { label: "Work",    href: "#projects",  id: "projects", n: "01" },
   { label: "Story",   href: "#about",     id: "about",    n: "02" },
@@ -18,6 +20,8 @@ export default function Nav() {
   const [active, setActive] = useState(-1);
   const [scrolled, setScrolled] = useState(false);
   const barRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const firstLinkRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     let ticking = false;
@@ -85,7 +89,19 @@ export default function Nav() {
     if (!open) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = prev; };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        toggleRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    const focusTimer = window.setTimeout(() => firstLinkRef.current?.focus(), 60);
+    return () => {
+      document.body.style.overflow = prev;
+      document.removeEventListener("keydown", onKey);
+      window.clearTimeout(focusTimer);
+    };
   }, [open]);
 
   const go = (href: string, idx: number) => (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -234,12 +250,15 @@ export default function Nav() {
             </a>
 
             <button
+              ref={toggleRef}
               onClick={() => setOpen(v => !v)}
               className="md:hidden theme-swatch flex items-center justify-center"
-              style={{ width: 34, height: 34 }}
-              aria-label="Toggle menu"
+              style={{ width: 44, height: 44 }}
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              aria-controls={MOBILE_MENU_ID}
             >
-              {open ? <X size={14} /> : <Menu size={14} />}
+              {open ? <X size={16} aria-hidden="true" /> : <Menu size={16} aria-hidden="true" />}
             </button>
           </div>
         </div>
@@ -249,6 +268,10 @@ export default function Nav() {
       <AnimatePresence>
         {open && (
           <motion.div
+            id={MOBILE_MENU_ID}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Primary navigation"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -259,13 +282,14 @@ export default function Nav() {
             {links.map((l, i) => (
               <motion.a
                 key={l.href}
+                ref={i === 0 ? firstLinkRef : undefined}
                 href={l.href}
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.05 + i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 onClick={go(l.href, i)}
                 className="flex items-baseline gap-3"
-                style={{ textDecoration: "none" }}
+                style={{ textDecoration: "none", padding: "10px 14px" }}
               >
                 <span
                   className="font-mono"
