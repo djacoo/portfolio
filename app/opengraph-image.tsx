@@ -14,131 +14,207 @@ export default function OGImage() {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          alignItems: "flex-start",
-          justifyContent: "flex-end",
-          padding: "72px 80px",
+          justifyContent: "space-between",
+          padding: "64px 80px",
           background: "#08080f",
           position: "relative",
           overflow: "hidden",
+          fontFamily: "serif",
         }}
       >
-        {/* Ambient glow — top left violet */}
+        {/* Soft amber glow — top right */}
         <div
           style={{
             position: "absolute",
-            top: -160,
-            left: -80,
-            width: 600,
-            height: 600,
+            top: -200,
+            right: -160,
+            width: 700,
+            height: 700,
             borderRadius: "50%",
             background:
-              "radial-gradient(circle, rgba(139,92,246,0.35) 0%, transparent 70%)",
-          }}
-        />
-        {/* Ambient glow — bottom right cyan */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: -120,
-            right: -80,
-            width: 500,
-            height: 500,
-            borderRadius: "50%",
-            background:
-              "radial-gradient(circle, rgba(34,211,238,0.25) 0%, transparent 70%)",
+              "radial-gradient(circle, rgba(200,160,106,0.18) 0%, transparent 70%)",
           }}
         />
 
-        {/* Hairline top border accent */}
+        {/* Top hairline */}
         <div
           style={{
             position: "absolute",
             top: 0,
             left: 0,
             right: 0,
-            height: 2,
+            height: 1,
             background:
-              "linear-gradient(90deg, transparent, rgba(167,139,250,0.8), rgba(96,165,250,0.6), transparent)",
+              "linear-gradient(90deg, transparent, rgba(200,160,106,0.6), transparent)",
           }}
         />
 
-        {/* Tag */}
+        {/* Top row — atelier mark + status */}
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 8,
-            marginBottom: 28,
+            justifyContent: "space-between",
           }}
         >
           <div
             style={{
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              background: "rgba(167,139,250,1)",
+              display: "flex",
+              alignItems: "center",
+              gap: 14,
             }}
-          />
+          >
+            <div
+              style={{
+                width: 10,
+                height: 10,
+                transform: "rotate(45deg)",
+                background: "#c8a06a",
+              }}
+            />
+            <span
+              style={{
+                fontFamily: "monospace",
+                fontSize: 14,
+                letterSpacing: "0.28em",
+                textTransform: "uppercase",
+                color: "rgba(239,228,210,0.72)",
+              }}
+            >
+              Portfolio · MMXXVI
+            </span>
+          </div>
           <span
             style={{
               fontFamily: "monospace",
               fontSize: 13,
-              letterSpacing: "0.2em",
+              letterSpacing: "0.24em",
               textTransform: "uppercase",
-              color: "rgba(167,139,250,0.85)",
+              color: "rgba(200,160,106,0.85)",
             }}
           >
-            Portfolio
+            Verona · Italy
           </span>
         </div>
 
-        {/* Name */}
+        {/* Name block */}
         <div
           style={{
-            fontSize: 72,
-            fontWeight: 700,
-            lineHeight: 1.05,
-            marginBottom: 20,
-            background:
-              "linear-gradient(135deg, rgba(192,184,255,1) 0%, rgba(167,139,250,1) 50%, rgba(128,216,255,1) 100%)",
-            backgroundClip: "text",
-            color: "transparent",
+            display: "flex",
+            flexDirection: "column",
+            gap: 18,
           }}
         >
-          Jacopo Parretti
+          <span
+            style={{
+              fontFamily: "monospace",
+              fontSize: 14,
+              letterSpacing: "0.28em",
+              textTransform: "uppercase",
+              color: "rgba(200,160,106,0.9)",
+            }}
+          >
+            — In Brief
+          </span>
+          <div
+            style={{
+              fontSize: 128,
+              fontStyle: "italic",
+              fontWeight: 500,
+              lineHeight: 0.95,
+              letterSpacing: "-0.02em",
+              color: "#efe4d2",
+            }}
+          >
+            Jacopo Parretti
+          </div>
+          <div
+            style={{
+              fontSize: 28,
+              fontStyle: "italic",
+              color: "rgba(239,228,210,0.62)",
+              letterSpacing: "-0.005em",
+            }}
+          >
+            AI Engineer · Developer · Researcher
+          </div>
         </div>
 
-        {/* Title */}
+        {/* Bottom row — tags + seal */}
         <div
           style={{
-            fontSize: 24,
-            color: "rgba(255,255,255,0.55)",
-            letterSpacing: "0.01em",
-            marginBottom: 48,
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: "space-between",
+            gap: 24,
           }}
         >
-          AI Engineer &amp; Developer · MSc Artificial Intelligence
-        </div>
-
-        {/* Pills */}
-        <div style={{ display: "flex", gap: 12 }}>
-          {["LLMs", "Deep Learning", "NLP", "Bioinformatics"].map((tag) => (
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+            {["Language Models", "Deep Learning", "NLP", "Bioinformatics"].map(
+              (tag) => (
+                <div
+                  key={tag}
+                  style={{
+                    padding: "8px 18px",
+                    borderRadius: 2,
+                    border: "0.5px solid rgba(200,160,106,0.35)",
+                    fontSize: 14,
+                    fontFamily: "monospace",
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                    color: "rgba(239,228,210,0.8)",
+                  }}
+                >
+                  {tag}
+                </div>
+              )
+            )}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-end",
+              gap: 6,
+            }}
+          >
             <div
-              key={tag}
               style={{
-                padding: "6px 16px",
-                borderRadius: 999,
-                border: "1px solid rgba(167,139,250,0.25)",
-                background: "rgba(167,139,250,0.08)",
-                fontSize: 14,
-                color: "rgba(192,184,255,0.8)",
-                letterSpacing: "0.03em",
+                fontSize: 72,
+                fontStyle: "italic",
+                color: "#c8a06a",
+                lineHeight: 1,
+                letterSpacing: "-0.04em",
               }}
             >
-              {tag}
+              jp
             </div>
-          ))}
+            <span
+              style={{
+                fontFamily: "monospace",
+                fontSize: 11,
+                letterSpacing: "0.22em",
+                textTransform: "uppercase",
+                color: "rgba(239,228,210,0.4)",
+              }}
+            >
+              Est. MMXXVI
+            </span>
+          </div>
         </div>
+
+        {/* Bottom hairline */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 1,
+            background:
+              "linear-gradient(90deg, transparent, rgba(200,160,106,0.6), transparent)",
+          }}
+        />
       </div>
     ),
     { ...size }

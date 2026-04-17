@@ -37,10 +37,10 @@ const iconMap: Record<string, React.ElementType | null> = {
 };
 
 const categories = [
-  { key: "ml",       label: "ML & AI",         index: "I",  blurb: "Where models are trained, evaluated, and coaxed into usefulness." },
-  { key: "language", label: "Languages",       index: "II", blurb: "The raw material — from hot loops in Go to quick sketches in Python." },
-  { key: "web",      label: "Web & APIs",      index: "III", blurb: "Interfaces and services. Where research meets the browser." },
-  { key: "infra",    label: "Infra & DevOps",  index: "IV", blurb: "Containers, databases, and the quiet pipelines that hold it all up." },
+  { key: "ml",       label: "ML & AI",         index: "I",   blurb: "For training, evaluating, and shipping machine-learning models." },
+  { key: "language", label: "Languages",       index: "II",  blurb: "Daily drivers. Go and Rust when performance matters; Python and TypeScript for everything else." },
+  { key: "web",      label: "Web & APIs",      index: "III", blurb: "What I reach for when building APIs and frontends." },
+  { key: "infra",    label: "Infra & DevOps",  index: "IV",  blurb: "Containers, databases, and the plumbing that holds it all together." },
 ];
 
 export default function TechStack() {
@@ -70,22 +70,22 @@ export default function TechStack() {
         className="ghost"
         aria-hidden="true"
       >
-        Craft
+        Stack
       </motion.span>
 
       {/* Vertical rail */}
       <div className="hidden lg:block absolute left-4 top-[16%] z-10">
-        <span className="side-rail-v">Chapter III · Instruments of the Practice</span>
+        <span className="side-rail-v">Chapter III · Technical Stack</span>
       </div>
 
-      <div className="mx-auto max-w-6xl px-6 relative z-10">
+      <div className="w-full px-6 sm:px-10 lg:px-14 relative z-10">
 
         {/* Header */}
         <div className="mb-16">
           <Reveal>
             <div className="flex items-baseline gap-3">
               <span className="section-marker" style={{ fontSize: 22 }}>(III)</span>
-              <span className="eyebrow-micro">Chapter 03 · Instruments</span>
+              <span className="eyebrow-micro">Chapter 03 · Stack</span>
             </div>
           </Reveal>
           <Reveal delay={80} className="mt-4">
@@ -97,14 +97,14 @@ export default function TechStack() {
           <div className="mt-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <RevealWords text="The" as="h2" italic delay={140} className="display display-lg" />
-              <RevealWords text="Instruments" as="h2" italic={false} delay={260} className="display display-lg" />
+              <RevealWords text="Stack." as="h2" italic={false} delay={260} className="display display-lg" />
             </div>
             <Reveal delay={440} className="max-w-md">
               <p className="footnote" style={{ color: "var(--fg-2)" }}>
-                Frameworks and runtimes reached for daily — grouped by the role they play in the work.
+                Languages, frameworks, and tools I use regularly — grouped by where they fit in the pipeline.
               </p>
               <p className="eyebrow-micro mt-3" style={{ color: "var(--amber)" }}>
-                {techStack.length} Instruments · IV Categories
+                {techStack.length} Tools · IV Categories
               </p>
             </Reveal>
           </div>
@@ -217,7 +217,7 @@ export default function TechStack() {
 
         {/* Footer strip */}
         <div className="mt-14 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span className="eyebrow-micro">End of catalogue · Chapter III</span>
+          <span className="eyebrow-micro">End of Chapter III</span>
           <span
             style={{
               fontFamily: "var(--font-cormorant)",
@@ -227,7 +227,7 @@ export default function TechStack() {
               fontFeatureSettings: '"swsh","salt","ss01"',
             }}
           >
-            Always learning, rarely finished.
+            List updated as the work changes.
           </span>
         </div>
       </div>

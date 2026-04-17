@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     template: "%s | Jacopo Parretti",
   },
   description:
-    "Portfolio of Jacopo Parretti — AI researcher and software engineer pursuing an MSc in Artificial Intelligence at the University of Verona. Specialising in LLMs, deep learning, and NLP.",
+    "Jacopo Parretti — AI engineer and software developer. MSc in Artificial Intelligence at the University of Verona; focus on language models, deep learning, and NLP.",
   keywords: [
     "Jacopo Parretti",
     "AI Engineer",
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     siteName: "Jacopo Parretti",
     title: "Jacopo Parretti — AI Engineer & Developer",
     description:
-      "AI researcher and software engineer pursuing an MSc in Artificial Intelligence at the University of Verona. Specialising in LLMs, deep learning, and NLP.",
+      "AI engineer and software developer. MSc in Artificial Intelligence at the University of Verona; focus on language models, deep learning, and NLP.",
     images: [
       {
         url: "/opengraph-image",
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Jacopo Parretti — AI Engineer & Developer",
     description:
-      "AI researcher and software engineer pursuing an MSc in Artificial Intelligence at the University of Verona.",
+      "AI engineer. MSc in Artificial Intelligence at the University of Verona — language models, deep learning, NLP.",
     images: ["/opengraph-image"],
   },
   robots: {
@@ -104,7 +104,7 @@ const jsonLd = {
   url: SITE_URL,
   jobTitle: personal.title,
   description:
-    "AI researcher and software engineer pursuing an MSc in Artificial Intelligence at the University of Verona. Specialising in LLMs, deep learning, and NLP.",
+    "AI engineer and software developer. MSc in Artificial Intelligence at the University of Verona; focus on language models, deep learning, and NLP.",
   email: personal.email,
   alumniOf: [
     {

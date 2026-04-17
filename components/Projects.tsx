@@ -183,17 +183,17 @@ export default function Projects() {
 
       {/* Vertical rail */}
       <div className="hidden lg:block absolute right-4 top-[14%] z-10">
-        <span className="side-rail-v">Chapter II · Selected Works MMXXI–MMXXVI</span>
+        <span className="side-rail-v">Chapter II · Selected Work MMXXI–MMXXVI</span>
       </div>
 
-      <div className="mx-auto max-w-6xl px-6 relative z-10">
+      <div className="w-full px-6 sm:px-10 lg:px-14 relative z-10">
 
         {/* Header */}
         <div className="mb-16 sm:mb-24">
           <Reveal>
             <div className="flex items-baseline gap-3">
               <span className="section-marker" style={{ fontSize: 22 }}>(II)</span>
-              <span className="eyebrow-micro">Chapter 02 · Objects</span>
+              <span className="eyebrow-micro">Chapter 02 · Projects</span>
             </div>
           </Reveal>
           <Reveal delay={80} className="mt-4">
@@ -205,14 +205,14 @@ export default function Projects() {
           <div className="mt-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <RevealWords text="Selected" as="h2" italic delay={140} className="display display-lg" />
-              <RevealWords text="Objects" as="h2" italic={false} delay={320} className="display display-lg" />
+              <RevealWords text="Projects." as="h2" italic={false} delay={320} className="display display-lg" />
             </div>
             <Reveal delay={500} className="max-w-md">
               <p className="footnote" style={{ color: "var(--fg-2)" }}>
-                Each originates on site, shaped by material, process, and circumstance.
+                Six projects from the last three years — research, coursework, and the occasional side build.
               </p>
               <p className="mt-3 text-[13px] leading-[1.85]" style={{ color: "var(--fg-3)" }}>
-                Research, tools, and production systems — from LLM fine-tuning and formal verification to RL for smart buildings.
+                Covers LLM fine-tuning, classical ML, formal verification, and reinforcement learning. All source on GitHub.
               </p>
               <p className="eyebrow-micro mt-3" style={{ color: "var(--amber)" }}>
                 {projects.length} Entries · {new Date().getFullYear()}
@@ -229,7 +229,7 @@ export default function Projects() {
               className="body-serif"
               style={{ fontSize: "clamp(1.1rem, 1.8vw, 1.5rem)", color: "var(--fg-2)", maxWidth: "44rem" }}
             >
-              These items are formed within the places themselves. Once completed, they leave their point of origin and circulate independently.
+              Most of these started as coursework or research and grew into something I kept building. The notes, the broken drafts, and the working code are all on GitHub.
             </p>
           </div>
         </Reveal>
@@ -244,9 +244,9 @@ export default function Projects() {
 
         {/* Footer ribbon */}
         <div className="mt-14 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span className="eyebrow-micro">End of catalogue · Chapter II</span>
+          <span className="eyebrow-micro">End of Chapter II</span>
           <span className="eyebrow-micro" style={{ color: "var(--amber)" }}>
-            Continues in Chapter III — Instruments
+            Chapter III — Stack follows
           </span>
         </div>
       </div>

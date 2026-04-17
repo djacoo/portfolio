@@ -77,10 +77,10 @@ export default function Contact() {
 
       {/* Vertical rail */}
       <div className="hidden lg:block absolute left-4 top-[14%] z-10">
-        <span className="side-rail-v">Chapter VII · Correspondence & Reply</span>
+        <span className="side-rail-v">Chapter VII · Correspondence</span>
       </div>
 
-      <div className="mx-auto max-w-4xl px-6 relative z-10">
+      <div className="w-full px-6 sm:px-10 lg:px-14 relative z-10">
 
         <div className="mb-14">
           <Reveal>
@@ -92,20 +92,20 @@ export default function Contact() {
           <Reveal delay={80} className="mt-4">
             <div className="flex items-center justify-center gap-3">
               <span className="h-px w-7" style={{ background: "var(--amber-line)" }} />
-              <span className="eyebrow">Say hello</span>
+              <span className="eyebrow">Get in touch</span>
               <span className="h-px w-7" style={{ background: "var(--amber-line)" }} />
             </div>
           </Reveal>
           <div className="mt-8 text-center">
             <RevealWords
-              text="Send"
+              text="Get"
               as="h2"
               italic
               delay={140}
               className="display display-lg"
             />
             <RevealWords
-              text="a request."
+              text="in touch."
               as="h2"
               italic
               delay={300}
@@ -114,7 +114,7 @@ export default function Contact() {
           </div>
           <Reveal delay={520} className="mt-8 max-w-lg mx-auto text-center">
             <p className="footnote" style={{ color: "var(--fg-2)" }}>
-              Research collaborations, job opportunities, or a quiet conversation about language models — write and I&apos;ll respond within a day.
+              Research, collaboration, job opportunities — or a conversation about language models. I reply within a day.
             </p>
           </Reveal>
         </div>
@@ -122,7 +122,7 @@ export default function Contact() {
         {/* Correspondence metadata strip */}
         <Reveal delay={100} className="mb-12 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           {[
-            { k: "Office hours",      v: "09:00 — 21:00 CET" },
+            { k: "Availability",      v: "09:00 — 21:00 CET" },
             { k: "Reply window",      v: "Within one day" },
             { k: "Preferred medium",  v: "Email · LinkedIn" },
             { k: "Language",          v: "EN · IT" },
@@ -240,7 +240,7 @@ export default function Contact() {
                 style={{ padding: "1rem 1.5rem", fontSize: 11 }}
               >
                 <Send size={12} />
-                Seek Admission
+                Send Message
               </motion.button>
               <AnimatePresence>
                 {burst && BURST_ANGLES.map((angle, i) => {
@@ -333,7 +333,7 @@ export default function Contact() {
             Jacopo Parretti
           </span>
           <span className="font-mono text-[10px] tracking-[0.22em] uppercase" style={{ color: "var(--fg-4)" }}>
-            © {new Date().getFullYear()} · Operating from Verona
+            © {new Date().getFullYear()} · Verona, Italy
           </span>
         </div>
       </div>

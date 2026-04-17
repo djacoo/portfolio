@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import BackgroundScene from "@/components/BackgroundScene";
+import AmbientDrift from "@/components/AmbientDrift";
 import AmbientMarks from "@/components/AmbientMarks";
 import Grain from "@/components/Grain";
 import Loader from "@/components/Loader";
@@ -22,6 +23,7 @@ export default function Home() {
   return (
     <main>
       <BackgroundScene />
+      <AmbientDrift />
       <AmbientMarks />
       <Grain />
       <Loader />

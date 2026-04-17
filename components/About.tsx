@@ -44,10 +44,10 @@ const currently = [
 ];
 
 const principles = [
-  { n: "i",   title: "Rigour over novelty",    note: "Understanding why systems work outlasts the systems themselves." },
-  { n: "ii",  title: "Code meets reality",     note: "Write software that survives contact with production." },
-  { n: "iii", title: "Data before opinion",    note: "Measure, then argue — never the reverse." },
-  { n: "iv",  title: "Craft is slow",          note: "Taste compounds. Shortcuts do not." },
+  { n: "i",   title: "Understand, then ship",   note: "Knowing why a system works matters more than knowing that it does." },
+  { n: "ii",  title: "Start small",             note: "The smallest version that actually works is usually the right starting point." },
+  { n: "iii", title: "Measure before arguing",  note: "Intuition is a prior. The numbers are the evidence." },
+  { n: "iv",  title: "Finish the boring part",  note: "Logs, reproducibility, and plumbing decide whether a project survives." },
 ];
 
 const info = [
@@ -105,17 +105,17 @@ export default function About() {
 
       {/* Vertical rail label — left edge */}
       <div className="hidden lg:block absolute left-4 top-[18%] z-10">
-        <span className="side-rail-v">Chapter I · Principle Preceding Practice</span>
+        <span className="side-rail-v">Chapter I · About the Work</span>
       </div>
 
-      <div className="mx-auto max-w-6xl px-6 relative z-10">
+      <div className="w-full px-6 sm:px-10 lg:px-14 relative z-10">
 
         {/* Header */}
         <div className="mb-16 sm:mb-24">
           <Reveal>
             <div className="flex items-baseline gap-3">
               <span className="section-marker" style={{ fontSize: 22 }}>(I)</span>
-              <span className="eyebrow-micro">Chapter 01 · Principle</span>
+              <span className="eyebrow-micro">Chapter 01 · About</span>
             </div>
           </Reveal>
           <Reveal delay={80} className="mt-4">
@@ -126,14 +126,14 @@ export default function About() {
           </Reveal>
           <div className="mt-8 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div>
-              <RevealWords text="Principle" as="h2" stagger={0} delay={140} italic className="display display-lg" />
-              <RevealWords text="thought as craft" as="p" stagger={90} delay={360} italic className="display display-sm mt-3" />
+              <RevealWords text="A few words" as="h2" stagger={0} delay={140} italic className="display display-lg" />
+              <RevealWords text="on the work." as="p" stagger={90} delay={360} italic className="display display-sm mt-3" />
             </div>
             <Reveal delay={520} className="max-w-sm md:text-right">
               <p className="footnote">
-                Objects are not designed first and placed later. They are formed within a practice and only leave once complete.
+                A short introduction — how I ended up in AI, what I'm working on now, and the habits behind the work.
               </p>
-              <p className="eyebrow-micro mt-2">§ 01 — On method</p>
+              <p className="eyebrow-micro mt-2">§ 01 — Introduction</p>
             </Reveal>
           </div>
         </div>
@@ -152,9 +152,10 @@ export default function About() {
                 }}
               >
                 <span style={{ color: "var(--amber)", fontSize: "1.2em", lineHeight: 0, verticalAlign: "-0.1em", marginRight: "0.05em" }}>·</span>
-                &ldquo;I came to computer science through biology. That detour taught me to
-                think algorithmically about messy, high-dimensional data — a foundation
-                that maps cleanly onto modern machine learning.&rdquo;
+                &ldquo;I came to computer science through biology. Three years with
+                genomic data taught me to reason about noise, dimensionality, and the
+                gap between a clean experiment and a real one — habits that carry
+                into everything I build now.&rdquo;
               </p>
             </Reveal>
 
@@ -214,7 +215,7 @@ export default function About() {
 
             {/* Interests — italic comma-list like inspo */}
             <Reveal delay={220} className="mt-12">
-              <p className="eyebrow-micro mb-3">Current preoccupations</p>
+              <p className="eyebrow-micro mb-3">Current interests</p>
               <p className="tag-serif" style={{ lineHeight: 1.5 }}>
                 {about.interests.map((t, i) => (
                   <span key={t}>
@@ -325,7 +326,7 @@ export default function About() {
             {/* Contact rows */}
             <Reveal delay={200}>
               <div>
-                <p className="eyebrow-micro mb-3">Directory</p>
+                <p className="eyebrow-micro mb-3">Contact</p>
                 <ul className="space-y-2.5">
                   {info.map(({ label, value, href, copy: isCopy, copyText }) => (
                     <li key={label} className="flex items-center justify-between gap-4">

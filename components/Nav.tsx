@@ -113,7 +113,7 @@ export default function Nav() {
         className={`nav-bar ${scrolled ? "scrolled" : ""}`}
         style={{ paddingBlock: scrolled ? "0.85rem" : "1.25rem" }}
       >
-        <div className="mx-auto max-w-7xl px-6 sm:px-10 flex items-center justify-between gap-6">
+        <div className="w-full px-6 sm:px-10 lg:px-14 flex items-center justify-between gap-6">
           {/* Wordmark — stacked serif name + tagline */}
           <a
             href="#hero"
@@ -161,7 +161,7 @@ export default function Nav() {
                 lineHeight: 1.1,
               }}
             >
-              Atelier<br />MMXXVI
+              Portfolio<br />MMXXVI
             </span>
           </a>
 
@@ -219,7 +219,7 @@ export default function Nav() {
                 fontWeight: 500,
               }}
             >
-              Send Request
+              Get in Touch
               <span
                 style={{
                   fontFamily: "var(--font-cormorant)",

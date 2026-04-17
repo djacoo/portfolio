@@ -11,13 +11,13 @@ const PATH_CURVE = "M 50 0 C 80 15, 20 35, 50 50 S 80 85, 50 100";
 const typeLabel: Record<string, string> = {
   work:      "Work",
   education: "Study",
-  personal:  "Craft",
+  personal:  "Side",
 };
 
 const typeGloss: Record<string, string> = {
-  work:      "Employment, retail, applied analysis.",
-  education: "Formal study and degree work.",
-  personal:  "Independent practice and open-source.",
+  work:      "Employment, retail, applied analytics.",
+  education: "University coursework and degrees.",
+  personal:  "Open-source and side projects.",
 };
 
 const periodGroups = [
@@ -70,36 +70,36 @@ export default function Timeline() {
 
       {/* Vertical rail */}
       <div className="hidden lg:block absolute right-4 top-[14%] z-10">
-        <span className="side-rail-v">Chapter V · Passage of Years</span>
+        <span className="side-rail-v">Chapter V · Path So Far</span>
       </div>
 
-      <div className="mx-auto max-w-6xl px-6 relative z-10">
+      <div className="w-full px-6 sm:px-10 lg:px-14 relative z-10">
 
         {/* Header */}
         <div className="mb-16 sm:mb-20">
           <Reveal>
             <div className="flex items-baseline gap-3">
               <span className="section-marker" style={{ fontSize: 22 }}>(V)</span>
-              <span className="eyebrow-micro">Chapter 05 · Journey</span>
+              <span className="eyebrow-micro">Chapter 05 · Timeline</span>
             </div>
           </Reveal>
           <Reveal delay={80} className="mt-4">
             <div className="flex items-center gap-3">
               <span className="h-px w-7" style={{ background: "var(--amber-line)" }} />
-              <span className="eyebrow">Passage of years</span>
+              <span className="eyebrow">The path so far</span>
             </div>
           </Reveal>
           <div className="mt-8 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
             <div>
-              <RevealWords text="A path" as="h2" italic delay={140} className="display display-lg" />
-              <RevealWords text="that circulates." as="h2" italic delay={320} className="display display-md" />
+              <RevealWords text="Across" as="h2" italic delay={140} className="display display-lg" />
+              <RevealWords text="five years." as="h2" italic delay={320} className="display display-md" />
             </div>
             <Reveal delay={500} className="max-w-md">
               <p className="footnote" style={{ color: "var(--fg-2)" }}>
-                Not a straight line — a loop between study, work, and quiet practice. Each stop leaves something on the next.
+                Overlapping rather than sequential — university, work, and independent projects running together since 2021.
               </p>
               <p className="eyebrow-micro mt-3" style={{ color: "var(--amber)" }}>
-                {timeline.length} Waypoints · MMXXI–Present
+                {timeline.length} Entries · MMXXI–Present
               </p>
             </Reveal>
           </div>
@@ -255,9 +255,9 @@ export default function Timeline() {
         <div className="mt-20 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3"
           style={{ borderTop: "0.5px solid var(--divider)" }}
         >
-          <span className="eyebrow-micro">End of passage · Chapter V</span>
+          <span className="eyebrow-micro">End of Chapter V</span>
           <span className="eyebrow-micro" style={{ color: "var(--amber)" }}>
-            Continues in Chapter VI — Credentials
+            Chapter VI — Degrees follows
           </span>
         </div>
       </div>

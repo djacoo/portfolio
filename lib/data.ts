@@ -7,7 +7,7 @@ export const personal = {
   title: "AI Engineer & Developer",
   tagline: "MSc Artificial Intelligence",
   description:
-    "I build intelligent systems and elegant software at the intersection of research and engineering.",
+    "Machine learning and software engineering, currently focused on language models. Pursuing an MSc in Artificial Intelligence at the University of Verona.",
   email: "jacopo.parretti2003@gmail.com",
   emailUni: "jacopo.parretti@studenti.univr.it",
   github: "https://github.com/djacoo",
@@ -19,9 +19,9 @@ export const personal = {
 // ─── About ───────────────────────────────────────────────────────────────────
 export const about = {
   paragraphs: [
-    "I came to computer science through biology. My bachelor's in Bioinformatics at the University of Verona taught me to think algorithmically about messy, high-dimensional data — a foundation that maps cleanly onto modern machine learning. I'm now pursuing an MSc in Artificial Intelligence, with research interests centred on language models and deep learning.",
-    "I work across the full spectrum of machine learning: information retrieval, supervised classification, language model fine-tuning, and reinforcement learning. I care about rigour — understanding not just what works, but why — and about writing code that survives contact with reality.",
-    "Alongside my studies I work as a data analyst, building dashboards and reporting pipelines for retail operations. I also contribute to open-source projects on GitHub, mostly in the ML and developer tooling space.",
+    "I came to computer science through biology. A bachelor's in Bioinformatics gave me the habits that carry over to machine learning — messy data, statistical reasoning, reproducibility — and left me more interested in the models than the organisms. I'm now doing an MSc in Artificial Intelligence, focused on language models and deep learning.",
+    "My work covers information retrieval, supervised classification, LLM fine-tuning, and reinforcement learning. I care about understanding why a system works, not only that it does, and about writing code that holds up outside the notebook.",
+    "Alongside the MSc I work as a data analyst, building dashboards and reporting pipelines for retail operations. I also contribute to open-source on GitHub — mostly ML and developer tooling.",
   ],
   interests: [
     "Large Language Models",
@@ -51,7 +51,7 @@ export const education = [
     location: "Verona, Italy",
     period: "2021 – 2024",
     description:
-      "Three-year degree at the intersection of computational biology, statistics, and software engineering. Strong foundation in algorithms, genomic data analysis, and scientific computing.",
+      "Three-year degree combining computational biology, statistics, and software engineering. Strong foundation in algorithms, genomic data analysis, and scientific computing.",
     highlights: ["Algorithms", "Genomics", "Statistical Analysis", "Scientific Computing", "Python", "R"],
     status: "Completed" as const,
     grade: "99 / 110",
@@ -91,7 +91,7 @@ export const projects = [
     index: "04",
     title: "A Decision Procedure for Equality, Lists, and Arrays",
     description:
-      "Production-ready satisfiability solver implementing congruence closure for quantifier-free first-order theories T_E, T_cons, and T_A. Follows Bradley & Manna (2007) with largest-ccpar heuristic optimisation and full SMT-LIB 2.0 support. 571 JUnit tests, all passing.",
+      "Satisfiability solver implementing congruence closure for the quantifier-free first-order theories T_E, T_cons, and T_A. Follows Bradley & Manna (2007), uses the largest-ccpar heuristic, and supports SMT-LIB 2.0. 571 JUnit tests, all passing.",
     tags: ["Java", "SMT Solving", "Congruence Closure", "Formal Verification", "JUnit"],
     github: "https://github.com/djacoo/equality-lists-arrays-solver",
     accent: "rgba(96,165,250,0.9)",
@@ -160,7 +160,7 @@ export const timeline = [
     organization: "JD Sports & Fashion",
     type: "work" as const,
     description:
-      "Dual role combining customer-facing retail operations with internal data analysis — trend reporting, KPI dashboards, and inventory insight.",
+      "Retail floor work alongside internal analytics — trend reporting, KPI dashboards, and inventory insight.",
   },
   {
     period: "2022 – Present",
@@ -168,7 +168,7 @@ export const timeline = [
     organization: "GitHub",
     type: "personal" as const,
     description:
-      "Ongoing contributions to ML and developer tooling ecosystems — bug fixes, feature PRs, and documentation across public repositories.",
+      "Contributions across ML and developer tooling repositories — bug fixes, feature PRs, and documentation.",
   },
   {
     period: "2022 – 2023",
@@ -176,7 +176,7 @@ export const timeline = [
     organization: "Foot Locker",
     type: "work" as const,
     description:
-      "First professional role in a high-traffic retail environment. Built strong customer service fundamentals and team coordination experience.",
+      "First job. High-traffic retail floor — customer service, shift coordination, and learning how to work under pressure.",
   },
   {
     period: "2021 – 2024",
@@ -184,7 +184,7 @@ export const timeline = [
     organization: "Università degli Studi di Verona",
     type: "education" as const,
     description:
-      "Three-year degree at the intersection of biology, computer science, and statistics. Strong foundation in algorithms, data analysis, and scientific computing.",
+      "Three-year degree spanning biology, computer science, and statistics. Strong foundation in algorithms, data analysis, and scientific computing.",
   },
 ];
 

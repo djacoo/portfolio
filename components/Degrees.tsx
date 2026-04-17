@@ -11,12 +11,12 @@ const romans = ["I", "II", "III", "IV", "V"];
 
 const quotes = [
   {
-    k: "On method",
-    v: "Study is not accumulation. It is the slow habit of asking better questions.",
+    k: "Department",
+    v: "Computer Science, Università di Verona. Both degrees taken at the same institution.",
   },
   {
-    k: "On discipline",
-    v: "A degree is a constraint. The interesting work begins after the constraint is internalised.",
+    k: "Shift",
+    v: "From statistical models on biological sequences to neural models on text — the material has changed; the way I approach it has not.",
   },
 ];
 
@@ -61,14 +61,14 @@ export default function Degrees() {
         <span className="side-rail-v">Chapter VI · The Paper Record</span>
       </div>
 
-      <div className="mx-auto max-w-6xl px-6 relative z-10">
+      <div className="w-full px-6 sm:px-10 lg:px-14 relative z-10">
 
         {/* Header */}
         <div className="mb-16 sm:mb-20">
           <Reveal>
             <div className="flex items-baseline gap-3">
               <span className="section-marker" style={{ fontSize: 22 }}>(VI)</span>
-              <span className="eyebrow-micro">Chapter 06 · Credentials</span>
+              <span className="eyebrow-micro">Chapter 06 · Degrees</span>
             </div>
           </Reveal>
           <Reveal delay={80} className="mt-4">
@@ -84,10 +84,10 @@ export default function Degrees() {
             </div>
             <Reveal delay={500} className="max-w-md">
               <p className="footnote" style={{ color: "var(--fg-2)" }}>
-                Two broadsides, one department. Separated by four years and the shift from wet biology to modelling.
+                Two degrees at the same department, four years apart — from wet biology to computation.
               </p>
               <p className="eyebrow-micro mt-3" style={{ color: "var(--amber)" }}>
-                {degrees.length} Broadsides · Università di Verona
+                {degrees.length} Degrees · Università di Verona
               </p>
             </Reveal>
           </div>
@@ -254,9 +254,9 @@ export default function Degrees() {
 
         {/* Footer strip */}
         <div className="mt-20 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span className="eyebrow-micro">End of broadsides · Chapter VI</span>
+          <span className="eyebrow-micro">End of Chapter VI</span>
           <span className="eyebrow-micro" style={{ color: "var(--amber)" }}>
-            Archived at Verona · MMXXIV–MMXXVI
+            Verona · MMXXIV–MMXXVI
           </span>
         </div>
       </div>

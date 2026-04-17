@@ -54,16 +54,16 @@ export default function Education() {
       </motion.span>
 
       <div className="hidden lg:block absolute left-4 top-[14%] z-10">
-        <span className="side-rail-v">Chapter IV · Formation & Origin</span>
+        <span className="side-rail-v">Chapter IV · Education</span>
       </div>
 
-      <div className="mx-auto max-w-6xl px-6 relative z-10">
+      <div className="w-full px-6 sm:px-10 lg:px-14 relative z-10">
 
         <div className="mb-16 sm:mb-24">
           <Reveal>
             <div className="flex items-baseline gap-3">
               <span className="section-marker" style={{ fontSize: 22 }}>(IV)</span>
-              <span className="eyebrow-micro">Chapter 04 · Formation</span>
+              <span className="eyebrow-micro">Chapter 04 · Education</span>
             </div>
           </Reveal>
           <Reveal delay={80} className="mt-4">
@@ -74,15 +74,15 @@ export default function Education() {
           </Reveal>
           <div className="mt-8 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
             <div>
-              <RevealWords text="Formed" as="h2" italic delay={140} className="display display-lg" />
-              <RevealWords text="through study." as="h2" italic delay={320} className="display display-md" />
+              <RevealWords text="Education" as="h2" italic delay={140} className="display display-lg" />
+              <RevealWords text="at Verona." as="h2" italic delay={320} className="display display-md" />
             </div>
             <Reveal delay={500} className="max-w-md">
               <p className="footnote" style={{ color: "var(--fg-2)" }}>
-                Formed by the places themselves. Two universities, one continuous line — biology into computation.
+                Two degrees at the same university, four years apart. Biology first, then AI.
               </p>
               <p className="eyebrow-micro mt-3" style={{ color: "var(--amber)" }}>
-                {education.length} Programmes · Verona
+                {education.length} Degrees · Verona
               </p>
             </Reveal>
           </div>

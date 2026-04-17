@@ -732,6 +732,99 @@ section[id] { scroll-margin-top: 88px; }
   40%           { opacity: 1;    transform: scale(1); }
 }
 
+/* ─── Ambient drift — slow scroll-reactive orbs + curves ─── */
+.ambient-drift { opacity: 0.95; }
+.drift-layer {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.drift-orb {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+  filter: saturate(1.1);
+}
+.drift-orb-1 {
+  top: -18%; left: -12%;
+  width: 62vw; height: 62vw;
+  background: radial-gradient(circle at 50% 50%,
+    rgba(200,160,106,0.22) 0%,
+    rgba(200,160,106,0.08) 40%,
+    rgba(200,160,106,0) 70%);
+  animation: driftA 32s ease-in-out infinite alternate;
+}
+.drift-orb-2 {
+  top: 22%; right: -18%;
+  width: 52vw; height: 52vw;
+  background: radial-gradient(circle at 50% 50%,
+    rgba(180,138,90,0.20) 0%,
+    rgba(180,138,90,0.07) 45%,
+    rgba(180,138,90,0) 72%);
+  animation: driftB 38s ease-in-out infinite alternate;
+}
+.drift-orb-3 {
+  bottom: -22%; left: 28%;
+  width: 58vw; height: 58vw;
+  background: radial-gradient(circle at 50% 50%,
+    rgba(160,118,76,0.18) 0%,
+    rgba(160,118,76,0.06) 45%,
+    rgba(160,118,76,0) 72%);
+  animation: driftC 46s ease-in-out infinite alternate;
+}
+@keyframes driftA {
+  0%   { transform: translate3d(0, 0, 0) rotate(0deg)   scale(1); }
+  50%  { transform: translate3d(3.5%, 4%, 0) rotate(9deg)  scale(1.07); }
+  100% { transform: translate3d(-2%, -3%, 0) rotate(-5deg) scale(0.97); }
+}
+@keyframes driftB {
+  0%   { transform: translate3d(0, 0, 0) rotate(0deg)   scale(1); }
+  50%  { transform: translate3d(-4%, 3%, 0) rotate(-7deg) scale(1.05); }
+  100% { transform: translate3d(2.5%, -2%, 0) rotate(6deg) scale(0.95); }
+}
+@keyframes driftC {
+  0%   { transform: translate3d(0, 0, 0) rotate(0deg)   scale(1); }
+  50%  { transform: translate3d(2.5%, -3.5%, 0) rotate(5deg) scale(1.04); }
+  100% { transform: translate3d(-3%, 2%, 0) rotate(-8deg)  scale(0.98); }
+}
+
+.drift-curve {
+  position: absolute;
+  top: -8%; left: -8%;
+  width: 116%; height: 116%;
+  opacity: 0.55;
+  will-change: transform;
+  animation: curveSway 72s ease-in-out infinite alternate;
+}
+.drift-stroke {
+  fill: none;
+  stroke: var(--amber);
+  stroke-width: 0.55;
+  stroke-linecap: round;
+  stroke-dasharray: 14 22;
+  animation: dashFlow 46s linear infinite;
+}
+.drift-stroke--alt {
+  stroke: rgba(107, 79, 53, 0.8);
+  stroke-dasharray: 6 18;
+  animation-duration: 58s;
+  animation-direction: reverse;
+}
+.section--obsidian ~ * .drift-stroke--alt,
+.drift-stroke--alt { }
+@keyframes curveSway {
+  0%   { transform: translate3d(0, 0, 0); }
+  50%  { transform: translate3d(-2.5%, 1.5%, 0); }
+  100% { transform: translate3d(2%, -1%, 0); }
+}
+@keyframes dashFlow {
+  to { stroke-dashoffset: -360; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drift-orb, .drift-curve, .drift-stroke { animation: none; }
+}
+
 /* ─── Ambient marks (site-wide editorial layer) ─── */
 .ambient-marks,
 .ambient-marks * {

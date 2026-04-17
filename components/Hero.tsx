@@ -64,7 +64,7 @@ export default function Hero() {
   const monoY   = useTransform(scrollYProgress, [0, 1], [0, -280]);
   const fadeOut = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
 
-  const sealText = "ATELIER · JACOPO PARRETTI · MMXXVI · VERONA · ";
+  const sealText = "JACOPO PARRETTI · AI ENGINEER · MMXXVI · VERONA · ";
 
   return (
     <section
@@ -130,7 +130,7 @@ export default function Hero() {
             <span className="eyebrow-micro" style={{ color: "var(--fg-4)" }}>Issue N° 01</span>
           </div>
           <p className="footnote" style={{ fontSize: 13, color: "var(--fg-3)" }}>
-            A private atelier for the practice of intelligent systems — research, engineering, and the long craft of building things that think.
+            A personal notebook for work on machine learning systems — research, engineering, and the software that sits around them.
           </p>
           <div className="mt-4 pt-4" style={{ borderTop: "0.5px solid var(--divider)" }}>
             <p className="eyebrow-micro">Coordinates</p>
@@ -186,7 +186,7 @@ export default function Hero() {
         </div>
 
         <div className="text-right">
-          <p className="eyebrow-micro" style={{ color: "var(--amber)" }}>Imagine Possible</p>
+          <p className="eyebrow-micro" style={{ color: "var(--amber)" }}>Available for Work</p>
           <p
             className="mt-1"
             style={{
@@ -198,14 +198,14 @@ export default function Hero() {
               maxWidth: "9rem",
             }}
           >
-            Est. MMXXVI <br /> Still under construction.
+            Est. MMXXVI <br /> Site in active development.
           </p>
         </div>
       </motion.div>
 
       {/* Stage */}
       <div className="relative flex-1 flex items-center justify-center px-6 z-10">
-        <div className="relative flex flex-col items-center max-w-6xl w-full">
+        <div className="relative flex flex-col items-center w-full">
 
           <motion.div
             style={{ y: monoY }}
@@ -299,7 +299,7 @@ export default function Hero() {
         className="relative z-20 px-6 sm:px-12 pb-10 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6"
       >
         <div className="max-w-[22rem] flex flex-col gap-3 sm:ml-16 md:ml-20">
-          <span className="eyebrow-micro" style={{ color: "var(--amber)" }}>— Manifesto</span>
+          <span className="eyebrow-micro" style={{ color: "var(--amber)" }}>— In Brief</span>
           <p className="text-[13px] leading-[1.85]" style={{ color: "var(--fg-3)" }}>
             {personal.description}
           </p>
@@ -313,7 +313,7 @@ export default function Hero() {
                 color: "var(--fg-2)",
               }}
             >
-              Jacopo Parretti, signed.
+              — Jacopo Parretti
             </span>
           </div>
         </div>
@@ -334,7 +334,7 @@ export default function Hero() {
             </Magnetic>
           </div>
           <span className="eyebrow-micro" style={{ color: "var(--fg-4)" }}>
-            07 Chapters · One Portfolio
+            VII Chapters · Verona, Italy
           </span>
         </div>
       </motion.div>
